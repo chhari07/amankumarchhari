@@ -120,7 +120,7 @@ useEffect(() => {
       <div className="w-full md:w-1/2 h-[35vh] md:h-full relative flex items-center justify-center mt-4 md:mt-0 z-10 order-1 md:order-2">
         
         {/* Render Canvas safe-shield context wrapper */}
-        <SafeHeroCanvas />
+       
 
         {/* HUD Utilities Status Control Strip Overlay */}
         <div className="absolute bottom-0 right-0 md:bottom-4 md:right-4 bg-[#1c1c1c]/90 border border-[#2d2d2d] px-2.5 py-1.5 rounded flex items-center gap-3.5 text-gray-500 text-[11px] backdrop-blur-sm font-mono">
