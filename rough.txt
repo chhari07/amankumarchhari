@@ -1,0 +1,14 @@
+my-portfolio/
+├── font/
+│   └── (Fonts auto-handled by Next.js Google Fonts)
+├── public/
+│   └── (Assets like fallback images or PDFs)
+├── src/
+│   └── app/
+│       ├── layout.js       # Configures custom font & global styles
+│       └── page.js         # Combines all sections into a single scrollable flow
+└── components/
+    ├── HeroCanvas.jsx      # Core Three.js Monogram Scene
+    ├── HeroSection.jsx     # Header HUD overlays and project highlights
+    ├── SkillsSection.jsx   # Grid workspace displaying your tech stacks
+    └── Experience.jsx      # Split timeline layout of your career data
