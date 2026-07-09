@@ -24,7 +24,7 @@ export default function SkillsSection() {
       icon: <Cpu className="w-5 h-5 text-purple-400 md:w-6 md:h-6" />,
       bgGradient: "from-purple-600 to-indigo-900",
       skills: ["Agentic AI Architecture", "LangChain Frameworks", "LangGraph State Graphs", "Flask Microservices"],
-      arrowPath: "M 360 360 Q 200 400 120 450", 
+      arrowPath: "M 360 360 Q 200 400 120 450",
       bubblePos: "md:left-[5%] md:top-[450px]",
       textPos: "md:left-[5%] md:top-[510px] text-left"
     },
@@ -84,15 +84,15 @@ export default function SkillsSection() {
   const activeMobileIndex = hoveredIndex !== null ? hoveredIndex : 0;
 
   return (
-    <section 
-      id="skills" 
+    <section
+      id="skills"
       ref={containerRef}
       className="w-full min-h-[600px] md:min-h-[750px] bg-[#0c0c0e] py-16 px-4 relative overflow-hidden flex flex-col items-center justify-start border-b border-[#1c1c1f] font-mono select-none"
     >
-         <div className="space-y-1">
-          <span className="text-[10px] text-zinc-500 tracking-widest block uppercase"> SKILLS_AREA_REPOSITORIES</span>
-          <h2 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight uppercase">Featured Skills</h2>
-        </div>
+      <div className="space-y-1">
+        <span className="text-[10px] text-zinc-500 tracking-widest block uppercase"> SKILLS_AREA_REPOSITORIES</span>
+        <h2 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight uppercase">Featured Skills</h2>
+      </div>
       {/* Desktop Canvas Help Tooltip Text */}
       <div className="absolute top-4 text-center text-[10px] text-zinc-600 w-full tracking-wider pointer-events-none px-4 hidden md:block">
         To move canvas, hold <span className="border border-zinc-700 px-1 rounded">Scroll wheel</span> or <span className="border border-zinc-700 px-1 rounded">Space</span> while dragging, or use the hand tool
@@ -100,11 +100,20 @@ export default function SkillsSection() {
 
       {/* =========================================================================
           DESKTOP HUD CONNECTOR LAYER: Renders live line tracing physics
+          FIX 1: dropped AnimatePresence mode="wait" — it was forcing the old
+                 line/dot to fully exit (~0.45s, since the circle's exit inherited
+                 the enter delay) before the next one could even start, which is
+                 what made switching between dock icons feel laggy.
+          FIX 2: swapped the pathLength "draw" trick for a manual strokeDashoffset
+                 animation on a fixed strokeDasharray. Framer Motion overrides
+                 stroke-dasharray inline when you animate pathLength, so the
+                 dashed "8 5" pattern you set never actually rendered — it just
+                 drew in as a solid line. This version keeps real dashes.
           ========================================================================= */}
       <div className="absolute inset-0 pointer-events-none z-10 hidden md:block">
         <svg className="w-full h-full" viewBox="0 0 1000 700" fill="none">
           <rect x="330" y="325" width="340" height="70" rx="14" stroke="#2a2a2e" strokeWidth="2" opacity="0.4" />
-          <AnimatePresence mode="wait">
+          <AnimatePresence>
             {hoveredIndex !== null && (
               <motion.g key={taskbarApps[hoveredIndex].id}>
                 {(() => {
@@ -118,10 +127,33 @@ export default function SkillsSection() {
                         strokeWidth="2.5"
                         strokeLinecap="round"
                         strokeDasharray="8 5"
-                        initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: 0.9 }}
-                        exit={{ pathLength: 0, opacity: 0 }}
-                        transition={{ duration: 0.4, ease: "easeInOut" }}
+                        initial={{ strokeDashoffset: 300, opacity: 0 }}
+                        animate={{
+                          strokeDashoffset: 0,
+                          opacity: 0.9,
+                          transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] }
+                        }}
+                        exit={{
+                          strokeDashoffset: -300,
+                          opacity: 0,
+                          transition: { duration: 0.2, ease: [0.7, 0, 0.84, 0] }
+                        }}
+                      />
+                      {/* Radar-ping ring: reinforces the "target acquired" HUD feel on lock */}
+                      <motion.circle
+                        cx={end.x}
+                        cy={end.y}
+                        r="4"
+                        fill="none"
+                        stroke="#ffffff"
+                        strokeWidth="1.5"
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={{
+                          scale: [0.6, 2.6],
+                          opacity: [0.7, 0],
+                          transition: { delay: 0.3, duration: 0.6, ease: "easeOut" }
+                        }}
+                        exit={{ opacity: 0, transition: { duration: 0.1 } }}
                       />
                       <motion.circle
                         cx={end.x}
@@ -129,9 +161,16 @@ export default function SkillsSection() {
                         r="4"
                         fill="#ffffff"
                         initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0, opacity: 0 }}
-                        transition={{ delay: 0.25, duration: 0.2 }}
+                        animate={{
+                          scale: 1,
+                          opacity: 1,
+                          transition: { delay: 0.3, duration: 0.25, type: "spring", stiffness: 400, damping: 15 }
+                        }}
+                        exit={{
+                          scale: 0,
+                          opacity: 0,
+                          transition: { duration: 0.15 }
+                        }}
                       />
                     </>
                   );
@@ -145,25 +184,47 @@ export default function SkillsSection() {
       {/* =========================================================================
           DESKTOP VIEWPORT BLOCK MATRIX: Renders full diagram configurations
           ========================================================================= */}
-      <div className="w-full max-w-7xl h-[620px] relative mt-12 hidden md:block">
+      <div className="w-full max-w-7xl h-[620px] relative  hidden md:block">
         {taskbarApps.map((app, index) => {
           const isActive = hoveredIndex === index;
           return (
             <div key={app.id} className="contents">
-              <div className={`absolute ${app.bubblePos} z-20 transition-all duration-300 transform ${isActive ? "scale-105 opacity-100" : "scale-95 opacity-15"}`}>
+              <motion.div
+                className={`absolute ${app.bubblePos} z-20`}
+                initial={false}
+                animate={{
+                  scale: isActive ? 1.05 : 0.95,
+                  opacity: isActive ? 1 : 0.15
+                }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              >
                 <div className="border-2 border-white bg-[#121214] text-white px-5 py-2 rounded-full text-xs font-bold shadow-[0_0_20px_rgba(255,255,255,0.05)] tracking-wide">
                   {app.title}
                 </div>
-              </div>
-              <div className={`absolute ${app.textPos} z-20 transition-all duration-300 w-[320px] ${isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2 pointer-events-none"}`}>
+              </motion.div>
+              <motion.div
+                className={`absolute ${app.textPos} z-20 w-[320px] ${!isActive ? "pointer-events-none" : ""}`}
+                initial={false}
+                animate={{
+                  opacity: isActive ? 1 : 0,
+                  y: isActive ? 0 : 8
+                }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+              >
                 <div className="space-y-1 bg-[#0c0c0e]/90 p-2 rounded border border-zinc-800/40 backdrop-blur-sm">
                   {app.skills.map((skill, sIdx) => (
-                    <p key={sIdx} className="text-xs text-zinc-300 font-medium tracking-wide">
+                    <motion.p
+                      key={sIdx}
+                      initial={false}
+                      animate={isActive ? { opacity: 1, x: 0 } : { opacity: 0, x: -4 }}
+                      transition={{ delay: isActive ? sIdx * 0.04 : 0, duration: 0.2 }}
+                      className="text-xs text-zinc-300 font-medium tracking-wide"
+                    >
                       &quot;{skill}&quot;{sIdx < app.skills.length - 1 ? "," : ""}
-                    </p>
+                    </motion.p>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             </div>
           );
         })}
@@ -173,7 +234,6 @@ export default function SkillsSection() {
           📱 MOBILE DEPLOYMENT VIEWPORT: Simplified, Tap-Responsive HUD Grid
           ========================================================================= */}
       <div className="w-full max-w-md mx-auto space-y-6 mt-4 block md:hidden z-20 pb-20">
-        
         {/* Active Category Header Display Bubble */}
         <div className="w-full flex justify-center">
           <div className="border-2 border-white bg-[#121214] text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-xl tracking-wide text-center uppercase">
@@ -188,7 +248,7 @@ export default function SkillsSection() {
             <span className="text-emerald-500 animate-pulse">● online</span>
           </div>
           {taskbarApps[activeMobileIndex].skills.map((skill, sIdx) => (
-            <motion.p 
+            <motion.p
               key={sIdx}
               initial={{ opacity: 0, x: -5 }}
               animate={{ opacity: 1, x: 0 }}
@@ -204,28 +264,35 @@ export default function SkillsSection() {
       {/* =========================================================================
           CENTRAL MACBOOK STYLE UTILITY APPS TASKBAR DOCK
           ========================================================================= */}
-      <div className="absolute bottom-6 md:top-[330px] md:bottom-auto left-1/2 transform -translate-x-1/2 z-40 w-auto max-w-[95vw]">
+      <div className="absolute bottom-6 md:top-[330px] md:bottom-auto mt-14    left-1/2 transform -translate-x-1/2 z-40 w-auto max-w-[95vw]">
         <div className="bg-[#1a1a1e]/80 border border-zinc-800/80 px-3.5 py-3 rounded-2xl flex items-end gap-3.5 md:gap-4 backdrop-blur-xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)]">
           {taskbarApps.map((app, index) => {
             const isHovered = hoveredIndex === index;
+            // Real macOS-dock-style magnification: neighbors scale and lift
+            // too, falling off with distance from the hovered icon, instead
+            // of only the hovered one popping while its neighbors sit static.
+            const distance = hoveredIndex === null ? Infinity : Math.abs(index - hoveredIndex);
+            const scale = distance === 0 ? 1.32 : distance === 1 ? 1.14 : distance === 2 ? 1.04 : 1;
+            const lift = distance === 0 ? -10 : distance === 1 ? -4 : 0;
             return (
               <div
                 key={app.id}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => setHoveredIndex(hoveredIndex === index ? null : index)}
-                className="relative cursor-pointer flex flex-col items-center justify-end transition-all duration-200"
-                style={{
-                  width: isHovered ? "56px" : "44px",
-                  height: isHovered ? "56px" : "44px",
-                }}
+                className="relative cursor-pointer flex flex-col items-center justify-end"
+                style={{ width: "44px", height: "44px" }}
               >
-                <div className={`w-full h-full rounded-xl bg-gradient-to-b ${app.bgGradient} p-2 flex items-center justify-center border border-white/5 shadow-md relative overflow-hidden group transition-all duration-200 ${isHovered ? "ring-2 ring-white/20" : ""}`}>
+                <motion.div
+                  className={`w-full h-full rounded-xl bg-gradient-to-b ${app.bgGradient} p-2 flex items-center justify-center border border-white/5 shadow-md relative overflow-hidden group ${isHovered ? "ring-2 ring-white/20" : ""}`}
+                  animate={{ scale, y: lift }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17, mass: 0.6 }}
+                >
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 opacity-40 pointer-events-none" />
-                  <div className="transform transition-transform duration-200 group-hover:scale-105 flex items-center justify-center w-full h-full">
+                  <div className="flex items-center justify-center w-full h-full">
                     {app.icon}
                   </div>
-                </div>
+                </motion.div>
                 <div className="absolute -bottom-1.5 flex justify-center w-full">
                   <div className={`h-1 rounded-full bg-white transition-all duration-300 ${isHovered ? "w-2.5 opacity-100" : "w-1 opacity-30"}`} />
                 </div>
@@ -235,7 +302,7 @@ export default function SkillsSection() {
 
           <div className="w-[1px] h-8 bg-zinc-800 self-center shrink-0" />
 
-          <div 
+          <div
             onClick={() => window.open("mailto:amankumarchhari@gmail.com")}
             className="w-11 h-11 rounded-xl bg-gradient-to-b from-zinc-800 to-zinc-900 p-2 flex items-center justify-center border border-white/5 shadow-md hover:scale-110 transition-transform cursor-pointer shrink-0"
           >
@@ -243,7 +310,6 @@ export default function SkillsSection() {
           </div>
         </div>
       </div>
-
     </section>
   );
 }
