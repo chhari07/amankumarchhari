@@ -48,7 +48,7 @@ export default function AboutMe() {
 
             {/* Core Bio Description Paragraph */}
             <p className="text-xs md:text-sm text-zinc-800 leading-relaxed max-w-3xl font-medium border-l-2 border-zinc-400 pl-3 md:pl-4 border-dashed">
-              I am a <strong className="text-black font-bold">Full-Stack Developer & Agentic AI Engineer</strong> pursuing my B.Tech in Computer Science[cite: 3, 7]. Operating at the intersection of <strong className="underline decoration-zinc-900 underline-offset-4 font-bold">Product Design & Technical Development (UI + Developer)</strong>, I design intuitive user workflows and engineer complex backend engines under unified project ownership[cite: 9]. My specialization centers on architecting autonomous engineering frameworks and asynchronous streaming pipelines built around <strong className="text-black font-bold">Agentic AI Architecture, LangChain, and LangGraph</strong>[cite: 7, 25], transforming rapid product concepts into production-grade, highly optimized software architectures.
+              I am a <strong className="text-black font-bold">Full-Stack Developer & Agentic AI Engineer</strong> pursuing my B.Tech in Computer Science. Operating at the intersection of <strong className="underline decoration-zinc-900 underline-offset-4 font-bold">Product Design & Technical Development (UI + Developer)</strong>, I design intuitive user workflows and engineer complex backend engines under unified project ownership. My specialization centers on architecting autonomous engineering frameworks and asynchronous streaming pipelines built around <strong className="text-black font-bold">Agentic AI Architecture, LangChain, and LangGraph</strong>, transforming rapid product concepts into production-grade, highly optimized software architectures.
             </p>
 
             {/* =========================================================================
@@ -71,27 +71,27 @@ export default function AboutMe() {
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-zinc-700 font-bold">
                     <li className="flex items-center gap-1.5">
                       <CheckSquare size={12} className="text-zinc-900 shrink-0" />
-                      <span>Agentic AI Architecture</span> [cite: 7]
+                      <span>Agentic AI Architecture</span> 
                     </li>
                     <li className="flex items-center gap-1.5">
                       <CheckSquare size={12} className="text-zinc-900 shrink-0" />
-                      <span>LangChain</span> [cite: 7]
+                      <span>LangChain</span> 
                     </li>
                     <li className="flex items-center gap-1.5">
                       <CheckSquare size={12} className="text-zinc-900 shrink-0" />
-                      <span>LangGraph</span> [cite: 7]
+                      <span>LangGraph</span> 
                     </li>
                     <li className="flex items-center gap-1.5">
                       <CheckSquare size={12} className="text-zinc-900 shrink-0" />
-                      <span>Next.js / React</span> [cite: 7]
+                      <span>Next.js / React</span> 
                     </li>
                     <li className="flex items-center gap-1.5">
                       <CheckSquare size={12} className="text-zinc-900 shrink-0" />
-                      <span>Node.js / Express</span> [cite: 7]
+                      <span>Node.js / Express</span> 
                     </li>
                     <li className="flex items-center gap-1.5">
                       <CheckSquare size={12} className="text-zinc-900 shrink-0" />
-                      <span>Flask</span> [cite: 7]
+                      <span>Flask</span> 
                     </li>
                   </ul>
                 </div>
@@ -105,15 +105,15 @@ export default function AboutMe() {
                   <ul className="space-y-2 text-[11px] text-zinc-700 font-bold">
                     <li className="flex items-start gap-2">
                       <span className="text-zinc-400 font-medium shrink-0">└─</span>
-                      <span><span className="text-zinc-900">Databases:</span> MongoDB, Firebase Firestore, SQL</span> [cite: 8]
+                      <span><span className="text-zinc-900">Databases:</span> MongoDB, Firebase Firestore, SQL</span> 
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-zinc-400 font-medium shrink-0">└─</span>
-                      <span><span className="text-zinc-900">Version Ops:</span> Git, GitHub Enterprise Infrastructure</span> [cite: 8]
+                      <span><span className="text-zinc-900">Version Ops:</span> Git, GitHub Enterprise Infrastructure</span> 
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-zinc-400 font-medium shrink-0">└─</span>
-                      <span><span className="text-zinc-900">Design Matrices:</span> Figma Workspaces, Canva Studio</span> [cite: 8]
+                      <span><span className="text-zinc-900">Design Matrices:</span> Figma Workspaces, Canva Studio</span> 
                     </li>
                   </ul>
                 </div>
@@ -130,8 +130,8 @@ export default function AboutMe() {
                 <span>ENGINEERING EVALUATION OUTPUT:</span>
               </div>
               <div className="flex flex-wrap gap-1.5 text-[10px]">
-                <span className="bg-zinc-900 text-white px-2 py-0.5 rounded-sm whitespace-nowrap">National Finalist // HackGSon</span> [cite: 42]
-                <span className="bg-zinc-300 border border-zinc-400 px-2 py-0.5 rounded-sm text-zinc-900 whitespace-nowrap">SIH Semi-Finalist</span> [cite: 43]
+                <span className="bg-zinc-900 text-white px-2 py-0.5 rounded-sm whitespace-nowrap">National Finalist // HackGSon</span> 
+                <span className="bg-zinc-300 border border-zinc-400 px-2 py-0.5 rounded-sm text-zinc-900 whitespace-nowrap">SIH Semi-Finalist</span> 
               </div>
             </div>
 
