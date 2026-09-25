@@ -1,47 +1,86 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Bitcount+Single+Ink:wght@100..900&family=Chelsea+Market&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-}
-
-/* =========================================================================
-    TAILWIND v4 CORE THEMING ENGINE UTILITIES
-    ========================================================================= */
+/* Raw terminal: black and greys, monospace everywhere */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  
-  /* Mapping custom Google Fonts explicitly into Tailwind CSS variables */
-  --font-display: 'Bebas Neue', 'Anton', sans-serif;
-  --font-handwritten: 'Chelsea Market', monospace;
-  --font-sketch: 'Bitcount Single Ink', 'Chelsea Market', cursive;
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-surface2: #1a1a1a;
+  --color-line: #2a2a2a;
+  --color-dim: #4d4d4d;
+  --color-muted: #8a8a8a;
+  --color-fg: #d4d4d4;
+  --color-bright: #f5f5f5;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-/* Global resets applying defaults cleanly */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Chelsea Market', Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-size: 14px;
+  line-height: 1.7;
 }
 
-/* =========================================================================
-    CUSTOM ENGINEERING LAYOUT CLASS METRICS
-    ========================================================================= */
+::selection {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
 
-/* Custom scrollbar reset utility layer */
-@utility no-scrollbar {
-  &::-webkit-scrollbar {
-    display: none;
+@keyframes blink {
+  50% {
+    opacity: 0;
   }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+}
+
+@layer components {
+  .cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.15em;
+    vertical-align: text-bottom;
+    background: var(--color-fg);
+    animation: blink 1s steps(1) infinite;
+  }
+
+  /* [ bracketed ] terminal button */
+  .term-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5ch;
+    border: 1px solid var(--color-line);
+    padding: 4px 12px;
+    color: var(--color-fg);
+    transition: background 0.1s, color 0.1s;
+  }
+
+  .term-btn:hover {
+    background: var(--color-fg);
+    color: var(--color-bg);
+  }
+
+  .term-btn-solid {
+    background: var(--color-bright);
+    border-color: var(--color-bright);
+    color: var(--color-bg);
+  }
+
+  .term-btn-solid:hover {
+    background: var(--color-muted);
+    border-color: var(--color-muted);
+  }
+
+  .term-link {
+    color: var(--color-bright);
+    text-decoration: underline;
+    text-decoration-color: var(--color-dim);
+    text-underline-offset: 3px;
+  }
+
+  .term-link:hover {
+    text-decoration-color: var(--color-bright);
+  }
 }
