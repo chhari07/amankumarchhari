@@ -318,7 +318,7 @@ export const projects: Project[] = [
     year: "2026",
     stack: ["React", "Supabase", "Clerk", "Node.js", "BuilderBot"],
     cover: "/projects/orderly-site.png",
-    links: [],
+    links: [{ label: "Live demo", href: "https://orderly-blue.vercel.app" }],
     problem:
       "Kirana customers already order over WhatsApp, but owners lose track of messages. Orderly adds an always-on bot that answers price and stock questions from the live catalogue, with no app install for the buyer.",
     highlights: [

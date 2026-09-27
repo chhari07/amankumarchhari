@@ -23,6 +23,7 @@ export const site = {
     "Finalist, National e-Governance Pitch-a-thon",
     "Winner, Reimagine Web Dev Hackathon",
     "Winner, Component Making Hackathon",
+    "7th Rank, Skill-A-Thon",
   ],
   // App-icon tiles + bars in "Tech stack". `level` is your own 0–100 rating; adjust freely.
   stack: [
