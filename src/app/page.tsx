@@ -57,15 +57,16 @@ export default function Home() {
       <section className="pb-10 pt-14 sm:pt-20">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Prompt cmd="whoami" />
-          <p className="flex items-center gap-2 border border-line px-2 py-0.5 text-xs text-muted">
-            <span className="size-2 animate-pulse rounded-full bg-bright" /> available immediately
+          <p className="flex items-center gap-2 border border-line bg-bg px-2 py-0.5 text-xs text-muted">
+            <span className="size-2 animate-pulse rounded-full bg-moss" /> available immediately
           </p>
         </div>
         <pre aria-label={site.name} className="mt-6 overflow-hidden text-[15px] font-bold leading-[1.05] text-bright sm:text-2xl">
           {ascii}
         </pre>
-        <h1 className="mt-6 text-xl font-bold text-bright sm:text-3xl">
-          {site.name} <span className="text-muted">— {site.role.toLowerCase().replace(" ai ", " AI ")}</span>
+        <h1 className="mt-6 text-bright">
+          <span className="display block text-4xl sm:text-6xl">{site.name}</span>
+          <span className="mt-2 block text-lg text-muted sm:text-xl">— {site.role.toLowerCase().replace(" ai ", " AI ")}</span>
         </h1>
         <p className="mt-3 text-lg text-fg sm:text-xl">
           &gt; I build full-stack apps and the AI inside them.<span className="cursor ml-1" aria-hidden />
@@ -158,7 +159,7 @@ export default function Home() {
           <ul className="space-y-5 border-l border-line pl-5">
             {site.experience.map((e) => (
               <li key={e.role} className="relative">
-                <span className="absolute -left-[27px] top-1 grid size-3 place-items-center border border-muted bg-bg" />
+                <span className="absolute -left-[27px] top-1 grid size-3 place-items-center border border-moss bg-bg" />
                 <p className="text-xs text-muted">[{e.when}]</p>
                 <p className="flex items-center gap-2 font-bold text-bright"><LuBriefcase aria-hidden className="shrink-0 text-muted" />{e.role}</p>
                 <p className="text-muted">{e.org}</p>
@@ -171,7 +172,7 @@ export default function Home() {
           <ul className="space-y-2">
             {site.achievements.map((a) => (
               <li key={a} className="flex items-start gap-2">
-                <LuTrophy className={`mt-1 shrink-0 ${a.startsWith("Winner") ? "text-bright" : "text-dim"}`} aria-hidden />
+                <LuTrophy className={`mt-1 shrink-0 ${a.startsWith("Winner") ? "text-rust" : "text-dim"}`} aria-hidden />
                 <span className={a.startsWith("Winner") ? "text-bright" : ""}>{a}</span>
               </li>
             ))}

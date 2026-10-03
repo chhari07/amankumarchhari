@@ -1,17 +1,22 @@
 @import "tailwindcss";
 
-/* Raw terminal: black and greys, monospace everywhere */
+/* Topographic terminal: palette sampled from the "npm run build" contour-map wallpaper */
 @theme inline {
-  --color-bg: #0a0a0a;
-  --color-surface: #111111;
-  --color-surface2: #1a1a1a;
-  --color-line: #2a2a2a;
-  --color-dim: #4d4d4d;
-  --color-muted: #8a8a8a;
-  --color-fg: #d4d4d4;
-  --color-bright: #f5f5f5;
+  --color-bg: #060808;
+  --color-surface: #0b0f0d;
+  --color-surface2: #121815;
+  --color-line: #1f3028;
+  --color-dim: #4f5f55;
+  --color-muted: #8d978b;
+  --color-fg: #d7ceb3;
+  --color-bright: #ece6d4;
+  /* contour accents */
+  --color-moss: #6fa23f;
+  --color-rust: #c4683d;
+  --color-navy: #6b8cc4;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
   --font-sans: var(--font-mono);
+  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
 }
 
 html {
@@ -20,13 +25,26 @@ html {
 
 body {
   background: var(--color-bg);
+  position: relative;
   color: var(--color-fg);
   font-size: 14px;
   line-height: 1.7;
 }
 
+/* Contour-map backdrop, faded toward the reading column */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to right, var(--color-bg) 0%, rgb(6 8 8 / 0.85) 35%, rgb(6 8 8 / 0.35) 100%),
+    url("/topo.webp") right center / cover no-repeat;
+  pointer-events: none;
+}
+
 ::selection {
-  background: var(--color-fg);
+  background: var(--color-moss);
   color: var(--color-bg);
 }
 
@@ -58,7 +76,8 @@ body {
   }
 
   .term-btn:hover {
-    background: var(--color-fg);
+    border-color: var(--color-moss);
+    background: var(--color-moss);
     color: var(--color-bg);
   }
 
@@ -69,8 +88,8 @@ body {
   }
 
   .term-btn-solid:hover {
-    background: var(--color-muted);
-    border-color: var(--color-muted);
+    background: var(--color-moss);
+    border-color: var(--color-moss);
   }
 
   .term-link {
@@ -81,6 +100,15 @@ body {
   }
 
   .term-link:hover {
-    text-decoration-color: var(--color-bright);
+    text-decoration-color: var(--color-moss);
+  }
+
+  /* Condensed poster type, as on the wallpaper */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.95;
   }
 }

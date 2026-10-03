@@ -6,7 +6,8 @@ export function Footer() {
   return (
     <footer id="contact" className="scroll-mt-16 border-t border-line py-10">
       <Prompt cmd={`echo "let's build something"`} />
-      <p className="mt-2 text-2xl font-bold text-bright sm:text-4xl">let&apos;s build something.</p>
+      <p className="display mt-4 text-4xl text-bright sm:text-6xl">let&apos;s build something.</p>
+      <div className="mt-3 h-0.5 w-40 bg-bright" aria-hidden />
       <p className="mt-2 max-w-xl text-muted">
         Available immediately · {site.location.split("·")[1]?.trim()}.
       </p>

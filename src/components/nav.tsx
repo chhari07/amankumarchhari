@@ -3,12 +3,12 @@ import { LuBriefcase, LuFileText, LuFolderGit2, LuMail, LuTerminal, LuUser } fro
 import { site } from "@/content/site";
 import { user } from "./ui";
 
-const item = "flex items-center gap-1.5 px-2 text-muted hover:bg-fg hover:text-bg";
+const item = "flex items-center gap-1.5 px-2 text-muted hover:bg-moss hover:text-bg";
 
 /** tmux-style status bar */
 export function Nav() {
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-bg/95 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-line bg-bg/80 backdrop-blur">
       <nav className="mx-auto flex h-10 max-w-5xl items-center justify-between px-4 text-[13px] sm:px-8">
         <Link href="/" className="flex items-center gap-1.5 bg-fg px-2 font-bold text-bg">
           <LuTerminal className="size-3.5" aria-hidden />

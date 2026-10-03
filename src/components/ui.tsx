@@ -11,9 +11,9 @@ export function Tag({ children }: { children: React.ReactNode }) {
 export function Prompt({ cmd, path = "~", cursor }: { cmd?: string; path?: string; cursor?: boolean }) {
   return (
     <p className="break-all">
-      <span className="text-muted">{user}@portfolio</span>
+      <span className="text-moss">{user}@portfolio</span>
       <span className="text-dim">:</span>
-      <span className="text-fg">{path}</span>
+      <span className="text-navy">{path}</span>
       <span className="text-dim">$</span> <span className="text-bright">{cmd}</span>
       {cursor && <span className="cursor ml-1" aria-hidden />}
     </p>
@@ -46,7 +46,7 @@ export function Block({
 export function SectionTitle({ children, icon: Icon, level = 2 }: { children: React.ReactNode; icon?: IconType; level?: 2 | 3 }) {
   return (
     <h2 className="mb-3 flex items-center gap-2 font-bold text-bright">
-      <span className="text-dim">{"#".repeat(level)}</span>
+      <span className="text-rust">{"#".repeat(level)}</span>
       {Icon && <Icon className="size-4 text-muted" aria-hidden />}
       {children}
     </h2>
@@ -69,7 +69,7 @@ export function Bar({ value, width = 20 }: { value: number; width?: number }) {
   return (
     <span aria-label={`${value}%`} className="whitespace-pre">
       <span className="text-dim">[</span>
-      <span className="text-fg">{"#".repeat(filled)}</span>
+      <span className="text-moss">{"#".repeat(filled)}</span>
       <span className="text-dim">{".".repeat(width - filled)}</span>
       <span className="text-dim">]</span> <span className="text-muted">{String(value).padStart(3)}%</span>
     </span>
