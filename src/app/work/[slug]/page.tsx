@@ -8,7 +8,7 @@ import { notFound } from "next/navigation";
 import { CaseTabs } from "@/components/case-tabs";
 import { DecisionDiagram, Diagram, FailureDiagram, Figure } from "@/components/diagram";
 import { SystemDiagram } from "@/components/system-diagram";
-import { Prompt, SectionTitle, Tag } from "@/components/ui";
+import { Pill, SectionTitle, Tag } from "@/components/ui";
 import { getProject, projects } from "@/content/projects";
 
 export const dynamicParams = false;
@@ -31,14 +31,12 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
 
   return (
     <article className="py-10">
-      <Link href="/#work" className="inline-flex items-center gap-2 text-muted hover:text-bright"><LuArrowLeft aria-hidden /> cd ..</Link>
+      <Link href="/#work" className="term-btn"><LuArrowLeft aria-hidden /> back</Link>
 
       {/* 30-second block */}
       <header className="mt-8">
-        <Prompt cmd="cat README.md" path={`~/projects/${project.slug}`} />
-        <h1 className="mt-6 text-3xl font-extrabold text-bright sm:text-5xl">
-          <span className="text-dim"># </span>{project.name}
-        </h1>
+        <Pill label={`work · ${project.slug}`} center={false} />
+        <h1 className="display ink mt-6 pb-1 text-5xl sm:text-7xl">{project.name}</h1>
         <p className="mt-3 text-lg">{project.tagline}</p>
         <p className="mt-1 text-muted">{project.role} · {project.year}</p>
         <div className="mt-4 flex flex-wrap gap-1.5">
@@ -56,9 +54,8 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
       </header>
 
       {project.cover && (
-        <figure className="group mt-10 border border-line bg-surface">
-          <figcaption className="border-b border-line px-3 py-1.5 text-xs text-dim">{project.cover.split("/").at(-1)}</figcaption>
-          <Image src={project.cover} alt={`${project.name} screenshot`} width={1600} height={900} priority className="w-full grayscale transition duration-300 group-hover:grayscale-0" />
+        <figure className="card group mt-10 overflow-hidden">
+          <Image src={project.cover} alt={`${project.name} screenshot`} width={1600} height={900} priority className="w-full grayscale-[60%] transition duration-300 group-hover:grayscale-0" />
         </figure>
       )}
 
@@ -91,7 +88,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
                 <SystemDiagram design={project.system} id={`${project.slug}-text`} />
               </Figure>
             </div>
-            <ol className="border border-line bg-surface">
+            <ol className="card overflow-hidden">
               {project.architecture.flow.map((step, i) => (
                 <li key={step} className="flex gap-4 border-b border-line px-4 py-2 last:border-b-0">
                   <span className="text-dim">{String(i + 1).padStart(2, "0")}</span>
@@ -105,7 +102,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
             <SectionTitle icon={LuScale}>Decisions</SectionTitle>
             <div className="space-y-4">
               {project.decisions.map((d) => (
-                <pre key={d.chose} className="whitespace-pre-wrap border border-line bg-surface p-4 font-mono">
+                <pre key={d.chose} className="card whitespace-pre-wrap p-4 font-mono text-[13px]">
                   <span className="block text-bright">+ {d.chose}</span>
                   <span className="block text-dim line-through">- {d.rejected}</span>
                   <span className="mt-2 block text-muted">  {d.why}</span>
@@ -116,7 +113,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
 
           <section className="mt-14">
             <SectionTitle icon={LuCircleAlert}>Failure handling</SectionTitle>
-            <div className="border border-line">
+            <div className="card overflow-hidden">
               <div className="hidden grid-cols-2 gap-6 border-b border-line bg-surface px-4 py-2 text-xs uppercase text-dim sm:grid">
                 <span>failure</span><span>handling</span>
               </div>
@@ -145,10 +142,10 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
 
       <section className="mt-14">
         <SectionTitle icon={LuChartBar}>Numbers</SectionTitle>
-        <div className={`grid grid-cols-2 gap-px border border-line bg-line ${["md:grid-cols-1", "md:grid-cols-2", "md:grid-cols-3", "md:grid-cols-4"][Math.min(project.metrics.length, 4) - 1]} ${project.metrics.length === 1 ? "grid-cols-1" : ""}`}>
+        <div className={`card grid grid-cols-2 gap-px overflow-hidden bg-line ${["md:grid-cols-1", "md:grid-cols-2", "md:grid-cols-3", "md:grid-cols-4"][Math.min(project.metrics.length, 4) - 1]} ${project.metrics.length === 1 ? "grid-cols-1" : ""}`}>
           {project.metrics.map((m) => (
-            <div key={m.label} className="bg-bg p-4">
-              <p className={`text-3xl font-bold ${isTodo(m.value) ? "text-dim" : "text-bright"}`}>{m.value}</p>
+            <div key={m.label} className="bg-surface2 p-4">
+              <p className={`text-3xl font-light ${isTodo(m.value) ? "text-dim" : "text-bright"}`}>{m.value}</p>
               <p className="mt-1 text-xs text-muted">{m.label}</p>
               {m.note && <p className="text-xs text-dim">{m.note}</p>}
             </div>
@@ -160,7 +157,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
         <SectionTitle icon={LuListTodo}>Next</SectionTitle>
         <ul className="space-y-1">
           {project.next.map((n) => (
-            <li key={n}><span className="text-dim">- [ ]</span> {n}</li>
+            <li key={n} className="flex gap-2"><span className="text-dim">○</span> {n}</li>
           ))}
         </ul>
       </section>

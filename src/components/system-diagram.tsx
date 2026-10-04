@@ -56,7 +56,7 @@ function EdgeLabel({ x, y, text, anchorStart }: { x: number; y: number; text: st
   const rx = anchorStart ? x : x - w / 2;
   return (
     <g>
-      <rect x={rx} y={y - h / 2} width={w} height={h} className="fill-surface" />
+      <rect x={rx} y={y - h / 2} width={w} height={h} rx="4" className="fill-surface" />
       <text x={rx + w / 2} y={y - h / 2 + 11} textAnchor="middle" className="fill-muted" fontSize="10.5">
         {lines.map((l, i) => (
           <tspan key={i} x={rx + w / 2} dy={i ? 12 : 0}>{l}</tspan>
@@ -122,7 +122,7 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
             const h = (z.rows[1] - z.rows[0]) * ROW + H + 44;
             return (
               <g key={z.label}>
-                <rect x={x} y={y} width={w} height={h} className="fill-bg/60 stroke-dim" strokeDasharray="4 4" />
+                <rect x={x} y={y} width={w} height={h} rx="14" className="fill-bg/50 stroke-dim" strokeDasharray="4 4" />
                 <text x={x + 8} y={y + 14} fontSize="10" letterSpacing="1.5" className="fill-dim">{z.label.toUpperCase()}</text>
               </g>
             );
@@ -178,8 +178,8 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
             const Icon = kinds[n.kind].icon;
             return (
               <g key={n.id}>
-                <rect x={b.x + 3} y={b.y + 3} width={W} height={H} className="fill-line" />
-                <rect x={b.x} y={b.y} width={W} height={H} className={`fill-bg ${n.kind === "gate" ? "stroke-fg" : "stroke-dim"}`} strokeWidth="1.2" />
+                <rect x={b.x} y={b.y + 3} width={W} height={H} rx="10" className="fill-line" />
+                <rect x={b.x} y={b.y} width={W} height={H} rx="10" className={`fill-surface2 ${n.kind === "gate" ? "stroke-fg" : "stroke-dim"}`} strokeWidth="1.2" />
                 <Icon x={b.x + 10} y={b.y + 10} size={15} className="text-muted" aria-hidden />
                 <text x={b.x + 32} y={b.y + 22} fontSize="13" fontWeight="700" className="fill-bright">{n.label}</text>
                 {n.sub && (

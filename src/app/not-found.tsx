@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Prompt } from "@/components/ui";
+import { Pill } from "@/components/ui";
 
 export default function NotFound() {
   return (
-    <div className="py-32">
-      <Prompt cmd="cd this-page" />
-      <p className="mt-2">bash: cd: this-page: No such file or directory</p>
-      <p className="mt-6 text-5xl font-bold text-bright sm:text-7xl">404</p>
-      <Link href="/" className="term-btn term-btn-solid mt-8">[ cd ~ ]</Link>
+    <div className="flex flex-col items-center py-32 text-center">
+      <Pill label="404" />
+      <p className="display mt-8 text-5xl text-bright sm:text-7xl">Nothing here</p>
+      <p className="mt-3 text-muted">This page doesn&apos;t exist.</p>
+      <Link href="/" className="term-btn term-btn-solid mt-8">Back home</Link>
     </div>
   );
 }

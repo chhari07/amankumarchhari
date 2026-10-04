@@ -18,9 +18,9 @@ export const kinds: Record<NodeKind, { icon: IconType; tag: string }> = {
 /** A titled frame, like a terminal pane. */
 export function Figure({ title, caption, index, children }: { title: string; caption?: string; index?: number; children: React.ReactNode }) {
   return (
-    <figure className="border border-line bg-surface">
-      <figcaption className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-4 py-2">
-        <span className="font-bold text-bright">
+    <figure className="card overflow-hidden">
+      <figcaption className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-4 py-2.5">
+        <span className="font-medium text-bright">
           {index !== undefined && <span className="text-dim">fig.{index + 1} </span>}
           {title}
         </span>
@@ -35,7 +35,7 @@ function Node({ node, compact }: { node: DiagramNode; compact?: boolean }) {
   const k = kinds[node.kind ?? "service"];
   const Icon = k.icon;
   return (
-    <div className={`w-full border bg-bg ${node.kind === "gate" ? "border-muted" : "border-line"}`}>
+    <div className={`w-full rounded-xl border bg-surface2 ${node.kind === "gate" ? "border-muted" : "border-line"}`}>
       <div className={`flex items-start gap-2 ${compact ? "px-2.5 py-2" : "px-3 py-2.5"}`}>
         <Icon className="mt-1 shrink-0 text-muted" aria-hidden />
         <div className="min-w-0 flex-1">
@@ -67,7 +67,7 @@ function Step({ step }: { step: DiagramStep }) {
     const n = step.parallel.length;
     const cols = n >= 3 ? "sm:grid-cols-2 lg:grid-cols-3" : n === 2 ? "sm:grid-cols-2" : "";
     return (
-      <div className="w-full border border-dashed border-line p-2">
+      <div className="w-full rounded-2xl border border-dashed border-line p-2">
         <p className="mb-2 px-1 text-[10px] uppercase tracking-wider text-dim">
           {step.label ?? `parallel ×${n}`}
           {step.note && <span className="normal-case tracking-normal text-muted"> · {step.note}</span>}
@@ -101,7 +101,7 @@ function States({ states, exits }: { states: string[]; exits?: { state: string; 
         {states.map((s, i) => (
           <li key={s} className="flex items-center">
             {i > 0 && <LuArrowRight className="mx-2 text-dim" aria-hidden />}
-            <span className={`border px-3 py-1.5 ${i === states.length - 1 ? "border-fg bg-fg text-bg" : "border-line bg-bg text-bright"}`}>
+            <span className={`rounded-full border px-3 py-1.5 ${i === states.length - 1 ? "border-bright bg-bright text-surface2" : "border-line bg-surface2 text-bright"}`}>
               {i === 0 && <span className="text-dim">● </span>}
               {s}
             </span>
@@ -111,7 +111,7 @@ function States({ states, exits }: { states: string[]; exits?: { state: string; 
       {exits && exits.length > 0 && (
         <ul className="mt-5 grid gap-2 sm:grid-cols-2">
           {exits.map((e) => (
-            <li key={e.state} className="flex items-start gap-2 border border-dashed border-line px-3 py-2">
+            <li key={e.state} className="flex items-start gap-2 rounded-xl border border-dashed border-line px-3 py-2">
               <LuX className="mt-1 shrink-0 text-muted" aria-hidden />
               <div>
                 <p className="text-bright">{e.state}</p>
@@ -141,9 +141,9 @@ export function DecisionDiagram({ decisions, index }: { decisions: Decision[]; i
         {decisions.map((d) => (
           <li key={d.chose}>
             <div className="grid items-center gap-2 md:grid-cols-[1fr_auto_1fr]">
-              <p className="border border-dashed border-line px-3 py-2 text-dim line-through">{d.rejected}</p>
+              <p className="rounded-xl border border-dashed border-line px-3 py-2 text-dim line-through">{d.rejected}</p>
               <LuArrowRight className="mx-auto rotate-90 text-muted md:rotate-0" aria-hidden />
-              <p className="border border-fg px-3 py-2 text-bright">{d.chose}</p>
+              <p className="rounded-xl border border-bright bg-surface2 px-3 py-2 text-bright">{d.chose}</p>
             </div>
             <p className="mt-2 flex items-start gap-1.5 text-xs text-muted">
               <LuCornerDownRight className="mt-0.5 shrink-0" aria-hidden /> {d.why}
@@ -162,11 +162,11 @@ export function FailureDiagram({ failures, index }: { failures: { what: string; 
       <ul className="space-y-3">
         {failures.map((f) => (
           <li key={f.what} className="grid items-center gap-2 md:grid-cols-[1fr_auto_1fr]">
-            <p className="flex items-start gap-2 border border-line bg-bg px-3 py-2 text-bright">
+            <p className="flex items-start gap-2 rounded-xl border border-line bg-surface2 px-3 py-2 text-bright">
               <LuCircleAlert className="mt-1 shrink-0 text-muted" aria-hidden /> {f.what}
             </p>
             <LuArrowRight className="mx-auto rotate-90 text-muted md:rotate-0" aria-hidden />
-            <p className={`flex items-start gap-2 border px-3 py-2 ${f.handling.startsWith("TODO") ? "border-dashed border-line italic text-dim" : "border-muted text-fg"}`}>
+            <p className={`flex items-start gap-2 rounded-xl border px-3 py-2 ${f.handling.startsWith("TODO") ? "border-dashed border-line italic text-dim" : "border-muted text-fg"}`}>
               <LuShieldCheck className="mt-1 shrink-0 text-muted" aria-hidden /> {f.handling}
             </p>
           </li>

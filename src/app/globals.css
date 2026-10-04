@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
-/* Topographic terminal: palette sampled from the "npm run build" contour-map wallpaper */
+/* Soft monochrome, macOS-flavoured: light grey canvas, SF-like type, colour only on icons */
 @theme inline {
-  --color-bg: #060808;
-  --color-surface: #0b0f0d;
-  --color-surface2: #121815;
-  --color-line: #1f3028;
-  --color-dim: #4f5f55;
-  --color-muted: #8d978b;
-  --color-fg: #d7ceb3;
-  --color-bright: #ece6d4;
-  /* contour accents */
-  --color-moss: #6fa23f;
-  --color-rust: #c4683d;
-  --color-navy: #6b8cc4;
+  --color-bg: #ececec;
+  --color-surface: #f7f7f7;
+  --color-surface2: #ffffff;
+  --color-line: #dadada;
+  --color-dim: #a6a6a6;
+  --color-muted: #6e6e6e;
+  --color-fg: #2b2b2b;
+  --color-bright: #111111;
+  /* accents, used sparingly */
+  --color-moss: #2fa35a;
+  --color-rust: #ee5a24;
+  --color-navy: #2f6fde;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
-  --font-sans: var(--font-mono);
-  --font-display: var(--font-oswald), "Arial Narrow", sans-serif;
+  --font-display: var(--font-sans);
 }
 
 html {
@@ -24,72 +24,50 @@ html {
 }
 
 body {
-  background: var(--color-bg);
-  position: relative;
+  background: radial-gradient(ellipse 120% 60% at 50% 0%, #fbfbfb 0%, var(--color-bg) 70%) fixed, var(--color-bg);
   color: var(--color-fg);
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-/* Contour-map backdrop, faded toward the reading column */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(to right, var(--color-bg) 0%, rgb(6 8 8 / 0.85) 35%, rgb(6 8 8 / 0.35) 100%),
-    url("/topo.webp") right center / cover no-repeat;
-  pointer-events: none;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: -0.011em;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-moss);
-  color: var(--color-bg);
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
+  background: var(--color-bright);
+  color: var(--color-surface2);
 }
 
 @layer components {
-  .cursor {
-    display: inline-block;
-    width: 0.6em;
-    height: 1.15em;
-    vertical-align: text-bottom;
-    background: var(--color-fg);
-    animation: blink 1s steps(1) infinite;
-  }
-
-  /* [ bracketed ] terminal button */
+  /* Rounded pill button */
   .term-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5ch;
+    gap: 0.4rem;
     border: 1px solid var(--color-line);
-    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--color-surface2);
+    padding: 5px 14px;
+    font-size: 13px;
     color: var(--color-fg);
-    transition: background 0.1s, color 0.1s;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+    transition: border-color 0.15s, background 0.15s, color 0.15s, transform 0.15s;
   }
 
   .term-btn:hover {
-    border-color: var(--color-moss);
-    background: var(--color-moss);
-    color: var(--color-bg);
+    border-color: var(--color-dim);
+    transform: translateY(-1px);
   }
 
   .term-btn-solid {
     background: var(--color-bright);
     border-color: var(--color-bright);
-    color: var(--color-bg);
+    color: var(--color-surface2);
   }
 
   .term-btn-solid:hover {
-    background: var(--color-moss);
-    border-color: var(--color-moss);
+    background: #333;
+    border-color: #333;
   }
 
   .term-link {
@@ -97,18 +75,35 @@ body::before {
     text-decoration: underline;
     text-decoration-color: var(--color-dim);
     text-underline-offset: 3px;
+    transition: text-decoration-color 0.15s;
   }
 
   .term-link:hover {
-    text-decoration-color: var(--color-moss);
+    text-decoration-color: var(--color-bright);
   }
 
-  /* Condensed poster type, as on the wallpaper */
+  /* Frosted card */
+  .card {
+    border: 1px solid var(--color-line);
+    border-radius: 18px;
+    background: rgb(255 255 255 / 0.6);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.03), 0 8px 24px -12px rgb(0 0 0 / 0.08);
+  }
+
+  /* Big, tight, semibold headline */
   .display {
     font-family: var(--font-display);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-    line-height: 0.95;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
   }
+
+  /* Soft top-to-bottom ink, like product-page headlines */
+  .ink {
+    background: linear-gradient(180deg, #1d1d1f 30%, #5a5a5f 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
 }

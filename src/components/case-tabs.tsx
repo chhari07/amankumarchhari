@@ -4,8 +4,8 @@ import { useSyncExternalStore } from "react";
 import { LuFileText, LuNetwork } from "react-icons/lu";
 
 const tabs = [
-  { id: "text", label: "cat README.md", icon: LuFileText },
-  { id: "diagrams", label: "./diagrams --all", icon: LuNetwork },
+  { id: "text", label: "Write-up", icon: LuFileText },
+  { id: "diagrams", label: "Diagrams", icon: LuNetwork },
 ] as const;
 
 // The active view lives in the URL hash, so /work/closeby#diagrams is shareable.
@@ -27,7 +27,7 @@ export function CaseTabs({ text, diagrams, count }: { text: React.ReactNode; dia
 
   return (
     <div>
-      <div role="tablist" aria-label="Case study view" className="sticky top-10 z-10 flex flex-wrap items-center gap-2 border-b border-line bg-bg/95 py-3 backdrop-blur">
+      <div role="tablist" aria-label="Case study view" className="sticky top-14 z-10 flex flex-wrap items-center gap-2 border-b border-line bg-bg/90 py-3 backdrop-blur">
         {tabs.map((t) => (
           <button
             key={t.id}

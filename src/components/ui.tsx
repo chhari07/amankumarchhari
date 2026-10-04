@@ -1,52 +1,50 @@
 import type { IconType } from "react-icons";
-import { site } from "@/content/site";
-
-export const user = site.name.split(" ")[0].toLowerCase();
+import { LuPlay } from "react-icons/lu";
 
 export function Tag({ children }: { children: React.ReactNode }) {
-  return <span className="border border-line px-1.5 text-xs text-muted">{children}</span>;
+  return <span className="rounded-full border border-line bg-surface2/70 px-2 py-px text-xs text-muted">{children}</span>;
 }
 
-/** A shell prompt line: `aman@portfolio:~$ cmd` */
-export function Prompt({ cmd, path = "~", cursor }: { cmd?: string; path?: string; cursor?: boolean }) {
+/** Small media-player pill that labels a section: `● | ▶ | about` */
+export function Pill({ label, center = true, className = "" }: { label: string; center?: boolean; className?: string }) {
   return (
-    <p className="break-all">
-      <span className="text-moss">{user}@portfolio</span>
-      <span className="text-dim">:</span>
-      <span className="text-navy">{path}</span>
-      <span className="text-dim">$</span> <span className="text-bright">{cmd}</span>
-      {cursor && <span className="cursor ml-1" aria-hidden />}
+    <p className={`${center ? "mx-auto" : ""} flex w-fit items-center gap-2 rounded-full border border-line bg-surface2/70 px-2.5 py-1 text-[11px] text-muted shadow-sm ${className}`}>
+      <span className="size-1.5 rounded-full bg-dim" aria-hidden />
+      <span className="h-3 w-px bg-line" aria-hidden />
+      <LuPlay className="size-2 fill-bright text-bright" aria-hidden />
+      <span className="h-3 w-px bg-line" aria-hidden />
+      {label}
     </p>
   );
 }
 
-/** A section = one command and its output. */
+/** A section, introduced by its pill and an optional headline. */
 export function Block({
   id,
-  cmd,
-  path,
+  label,
+  title,
   children,
   className = "",
 }: {
   id?: string;
-  cmd: string;
-  path?: string;
+  label: string;
+  title?: string;
   children: React.ReactNode;
   className?: string;
 }) {
   return (
-    <section id={id} className={`scroll-mt-16 py-10 ${className}`}>
-      <Prompt cmd={cmd} path={path} />
-      <div className="mt-4">{children}</div>
+    <section id={id} className={`scroll-mt-20 py-14 ${className}`}>
+      <Pill label={label} />
+      {title && <h2 className="display ink mx-auto mt-6 max-w-2xl text-center text-4xl sm:text-5xl">{title}</h2>}
+      <div className={title ? "mt-12" : "mt-8"}>{children}</div>
     </section>
   );
 }
 
-/** Markdown-style heading used in case studies. */
-export function SectionTitle({ children, icon: Icon, level = 2 }: { children: React.ReactNode; icon?: IconType; level?: 2 | 3 }) {
+/** Heading used in case studies. */
+export function SectionTitle({ children, icon: Icon }: { children: React.ReactNode; icon?: IconType }) {
   return (
-    <h2 className="mb-3 flex items-center gap-2 font-bold text-bright">
-      <span className="text-rust">{"#".repeat(level)}</span>
+    <h2 className="mb-3 flex items-center gap-2 text-xl font-semibold tracking-tight text-bright">
       {Icon && <Icon className="size-4 text-muted" aria-hidden />}
       {children}
     </h2>
@@ -63,15 +61,14 @@ export function IconText({ icon: Icon, children, className = "" }: { icon: IconT
   );
 }
 
-/** ASCII progress bar: [########..] 80% */
-export function Bar({ value, width = 20 }: { value: number; width?: number }) {
-  const filled = Math.round((value / 100) * width);
+/** Thin rounded progress bar with a percentage. */
+export function Bar({ value }: { value: number }) {
   return (
-    <span aria-label={`${value}%`} className="whitespace-pre">
-      <span className="text-dim">[</span>
-      <span className="text-moss">{"#".repeat(filled)}</span>
-      <span className="text-dim">{".".repeat(width - filled)}</span>
-      <span className="text-dim">]</span> <span className="text-muted">{String(value).padStart(3)}%</span>
+    <span className="flex flex-1 items-center gap-3" aria-label={`${value}%`}>
+      <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-line">
+        <span className="block h-full rounded-full bg-bright" style={{ width: `${value}%` }} />
+      </span>
+      <span className="w-9 text-right text-xs tabular-nums text-muted">{value}%</span>
     </span>
   );
 }

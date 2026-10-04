@@ -1,26 +1,32 @@
-import { LuDownload, LuGithub, LuLinkedin, LuMail } from "react-icons/lu";
+import { LuFileText, LuGithub, LuLinkedin, LuMail } from "react-icons/lu";
 import { site } from "@/content/site";
-import { Prompt } from "./ui";
+import { Pill } from "./ui";
+
+const links = [
+  { icon: LuMail, label: "Email", href: `mailto:${site.email}` },
+  { icon: LuLinkedin, label: "LinkedIn", href: site.links.linkedin },
+  { icon: LuGithub, label: "GitHub", href: site.links.github },
+  { icon: LuFileText, label: "Resume", href: site.links.resume },
+];
 
 export function Footer() {
   return (
-    <footer id="contact" className="scroll-mt-16 border-t border-line py-10">
-      <Prompt cmd={`echo "let's build something"`} />
-      <p className="display mt-4 text-4xl text-bright sm:text-6xl">let&apos;s build something.</p>
-      <div className="mt-3 h-0.5 w-40 bg-bright" aria-hidden />
-      <p className="mt-2 max-w-xl text-muted">
+    <footer id="contact" className="mx-auto w-full max-w-xl scroll-mt-20 py-16">
+      <Pill label="contact" />
+      <p className="mt-8 text-bright">Let&apos;s connect</p>
+      <p className="mt-1 text-muted">
         Available immediately · {site.location.split("·")[1]?.trim()}.
       </p>
-      <div className="mt-6 flex flex-wrap gap-2">
-        <a href={`mailto:${site.email}`} className="term-btn term-btn-solid"><LuMail aria-hidden /> {site.email}</a>
-        <a href={site.links.github} className="term-btn"><LuGithub aria-hidden /> github</a>
-        <a href={site.links.linkedin} className="term-btn"><LuLinkedin aria-hidden /> linkedin</a>
-        <a href={site.links.resume} className="term-btn"><LuDownload aria-hidden /> resume.pdf</a>
-      </div>
-      <div className="mt-10">
-        <Prompt cursor />
-      </div>
-      <p className="mt-6 text-xs text-dim">© {new Date().getFullYear()} {site.name} · process exited with code 0</p>
+      <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-muted">
+        {links.map(({ icon: Icon, label, href }) => (
+          <li key={label}>
+            <a href={href} className="flex items-center gap-1.5 transition hover:text-bright">
+              <Icon className="size-3.5" aria-hidden /> {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-16 text-center text-xs text-dim">© {new Date().getFullYear()} {site.name}</p>
     </footer>
   );
 }

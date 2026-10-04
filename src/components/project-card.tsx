@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LuArrowRight, LuExternalLink, LuFolder, LuGithub } from "react-icons/lu";
+import { LuArrowRight, LuExternalLink, LuGithub } from "react-icons/lu";
 import type { Project } from "@/content/projects";
 import { Tag } from "./ui";
 
@@ -10,14 +10,7 @@ export function ProjectCard({ project, featured }: { project: Project; featured?
   const href = `/work/${project.slug}`;
 
   return (
-    <article className={`group flex flex-col border border-line bg-surface transition hover:border-muted ${featured ? "md:col-span-2" : ""}`}>
-      <div className="flex items-center justify-between border-b border-line px-3 py-1.5 text-xs text-dim">
-        <span className="flex items-center gap-1.5"><LuFolder aria-hidden /> ~/projects/{project.slug}/</span>
-        <span className="flex items-center gap-2">
-          {live && <span className="flex items-center gap-1 text-muted"><span className="size-1.5 rounded-full bg-fg" /> live</span>}
-          {project.year}
-        </span>
-      </div>
+    <article className={`card group flex flex-col overflow-hidden transition hover:-translate-y-0.5 hover:border-dim ${featured ? "md:col-span-2" : ""}`}>
       {project.cover && (
         <Link href={href} tabIndex={-1} className={`relative block overflow-hidden border-b border-line ${featured ? "aspect-[21/9]" : "aspect-[16/9]"}`}>
           <Image
@@ -25,19 +18,23 @@ export function ProjectCard({ project, featured }: { project: Project; featured?
             alt={`${project.name} screenshot`}
             fill
             sizes="(min-width: 768px) 60vw, 100vw"
-            className="object-cover object-top opacity-80 grayscale transition duration-300 group-hover:scale-[1.02] group-hover:opacity-100 group-hover:grayscale-0"
+            className="object-cover object-top grayscale-[60%] transition duration-300 group-hover:scale-[1.02] group-hover:grayscale-0"
           />
         </Link>
       )}
-      <div className="flex flex-1 flex-col p-4">
-        <Link href={href}>
-          <span className="font-bold text-bright hover:underline">{project.name}</span>
-          <span className="text-muted"> — {project.tagline}</span>
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center justify-between text-xs text-dim">
+          <span>{project.year}</span>
+          {live && <span className="flex items-center gap-1.5 text-muted"><span className="size-1.5 rounded-full bg-moss" /> live</span>}
+        </div>
+        <Link href={href} className="mt-1">
+          <span className="text-xl font-semibold tracking-tight text-bright hover:underline">{project.name}</span>
+          <span className="block text-muted">{project.tagline}</span>
         </Link>
         <ul className="mt-3 space-y-1 text-[13px]">
           {project.highlights.slice(0, featured ? 3 : 2).map((h) => (
             <li key={h} className="flex gap-2">
-              <span className="text-dim">›</span>
+              <span className="text-dim">·</span>
               <span>{h}</span>
             </li>
           ))}

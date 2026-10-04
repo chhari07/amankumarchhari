@@ -1,11 +1,11 @@
 # amankumarchhari.vercel.app
 
 Portfolio of **Aman Kumar Chhari**, full-stack & applied AI engineer.
-A terminal-style site with a written case study and a set of system diagrams for each project.
+A soft, minimal light-themed site with a written case study and a set of system diagrams for each project.
 
 ## Stack
 
-Next.js 16 (App Router, static generation) · React 19 · TypeScript · Tailwind CSS 4 · react-icons · JetBrains Mono
+Next.js 16 (App Router, static generation) · React 19 · TypeScript · Tailwind CSS 4 · react-icons · DM Sans · JetBrains Mono
 
 ## Run locally
 

@@ -7,7 +7,29 @@ export const site = {
   intro:
     "Frontend, APIs, databases, auth, payments and AI features. I take an idea to a working, deployed product, from web apps and dashboards to marketplaces, bots and browser extensions.",
   about:
-    "I'm a full-stack engineer who loves turning messy ideas into apps that just work. I've built for clients since 2023, from the first conversation to deployment: frontend, APIs, databases, payments and AI features. Every project is a new chance to ship something people actually use.",
+    "Full-stack and applied AI engineer. Since 2023 I've built client products from first brief to deployment, covering frontend, APIs, databases, payments and AI features.",
+  // "What I'm looking for" section: keep in sync with the resume
+  jobSearch: {
+    roles: ["Full-stack engineer", "Applied AI engineer", "Software engineer (SDE-1)"],
+    details: [
+      { label: "Type", value: "Full-time" },
+      { label: "Level", value: "Entry level · B.Tech CSE, 2026" },
+      { label: "Location", value: "Gurgaon, Bengaluru or remote" },
+      { label: "Start", value: "Immediately" },
+    ],
+    teams: ["Commerce & merchant tools", "WhatsApp & messaging", "AI features in real products", "Payments & checkout"],
+  },
+  // "Applied AI" section on the home page
+  appliedAi: {
+    what: "Applied AI is the engineering that puts language models to work inside real products: deciding where a model actually helps, connecting it to the app's data and tools, checking what it returns, and keeping cost and failures under control. The model is one part of the system, not the whole product.",
+    whyIntro: "A model demo takes an afternoon. Making it dependable for real users, with real data and real money, is the hard part. That is the job of an applied AI engineer, and this is how I approach it:",
+    why: [
+      { title: "Guardrails first", text: "Every model call passes one gateway with auth, rate limits, a kill switch and a daily spend cap." },
+      { title: "AI drafts, people decide", text: "The model proposes stock imports, replies and restock ideas. Nothing is saved until the owner approves it." },
+      { title: "Checked output", text: "Responses are validated against a Zod schema. Malformed output fails closed: the user sees an error and nothing is saved." },
+      { title: "Measured, not guessed", text: "Eval cases cover misspellings, Hindi aliases and gibberish input, so prompt and model changes can be tested before they ship." },
+    ],
+  },
   education: {
     school: "Jaypee University of Engineering & Technology, Guna",
     degree: "B.Tech, Computer Science & Engineering",
@@ -25,15 +47,17 @@ export const site = {
     "Winner, Component Making Hackathon",
     "7th Rank, Skill-A-Thon",
   ],
-  // App-icon tiles + bars in "Tech stack". `level` is your own 0–100 rating; adjust freely.
+  // Dock tiles + skill bars. `bg`/`fg` colour the dock icon; `level` is your own 0–100 rating.
   stack: [
     { name: "Next.js", short: "Nx", bg: "#111111", fg: "#ffffff", level: 90 },
-    { name: "TypeScript", short: "Ts", bg: "#0b2447", fg: "#4ea3ff", level: 85 },
-    { name: "Node.js", short: "Nd", bg: "#0f2a14", fg: "#6cc24a", level: 80 },
-    { name: "Postgres", short: "Pg", bg: "#14213d", fg: "#8fb8ff", level: 75 },
-    { name: "Claude API", short: "Ai", bg: "#3a1606", fg: "#ff9a3c", level: 80 },
+    { name: "React", short: "Re", bg: "#20232a", fg: "#61dafb", level: 90 },
+    { name: "TypeScript", short: "Ts", bg: "#3178c6", fg: "#ffffff", level: 85 },
+    { name: "Node.js", short: "Nd", bg: "#3c9a4f", fg: "#ffffff", level: 80 },
+    { name: "Postgres", short: "Pg", bg: "#d6e6f5", fg: "#336791", level: 75 },
+    { name: "Claude API", short: "Ai", bg: "#d97757", fg: "#ffffff", level: 80 },
   ],
   builds: ["Web apps", "APIs & backends", "Dashboards & SaaS", "Auth & payments", "AI features", "Browser extensions"],
+  avatar: "/avatar-me.jpg", // square headshot in /public
   email: "amankumarchhari@gmail.com",
   links: {
     github: "https://github.com/chhari07",
