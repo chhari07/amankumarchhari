@@ -34,10 +34,10 @@ function DockIcon({ item }: { item: DockItem }) {
   const Icon = item.icon;
   const tile = (
     <span
-      className="grid size-[30px] place-items-center rounded-[8px] sm:rounded-[12px] shadow-[inset_0_0_0_1px_rgb(0_0_0/0.06),0_2px_4px_rgb(0_0_0/0.08)] transition duration-200 group-hover:-translate-y-2 group-hover:scale-115 sm:size-12"
+      className="grid size-[min(30px,6.4vw)] place-items-center rounded-[min(8px,1.8vw)] sm:rounded-[12px] shadow-[inset_0_0_0_1px_rgb(0_0_0/0.06),0_2px_4px_rgb(0_0_0/0.08)] transition duration-200 group-hover:-translate-y-2 group-hover:scale-115 sm:size-12"
       style={{ background: item.bg, color: item.fg }}
     >
-      <Icon className="size-4 sm:size-6" aria-hidden />
+      <Icon className="size-[55%] sm:size-6" aria-hidden />
     </span>
   );
   return (
@@ -75,9 +75,9 @@ export default function Home() {
           <span className="size-1.5 animate-pulse rounded-full bg-moss" /> available immediately · open to full-time roles
         </a>
 
-        <ul className="card mt-24 flex items-end gap-1.5 rounded-[16px] bg-surface2/70 px-2 py-2 backdrop-blur sm:mt-32 sm:gap-2.5 sm:rounded-[22px] sm:px-3 sm:py-2.5">
+        <ul className="card mt-24 flex max-w-full items-end gap-[min(6px,1vw)] rounded-[min(16px,3.5vw)] bg-surface2/70 p-[min(8px,1.6vw)] backdrop-blur sm:mt-32 sm:gap-2.5 sm:rounded-[22px] sm:px-3 sm:py-2.5">
           {dockTools.map((d) => <DockIcon key={d.label} item={d} />)}
-          <li aria-hidden className="mx-0.5 h-7 w-px sm:mx-1 sm:h-10 self-center bg-line" />
+          <li aria-hidden className="mx-px h-[min(28px,6vw)] w-px self-center bg-line sm:mx-1 sm:h-10" />
           {dockLinks.map((d) => <DockIcon key={d.label} item={d} />)}
         </ul>
       </section>
