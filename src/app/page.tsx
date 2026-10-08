@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { IconType } from "react-icons";
 import { LuBriefcase, LuFileText, LuGithub, LuGauge, LuLayers, LuLinkedin, LuMail, LuShieldCheck, LuTrophy, LuUserCheck, LuFileCheck, LuDownload } from "react-icons/lu";
 import { SiClaude, SiNextdotjs, SiNodedotjs, SiPostgresql, SiReact, SiTypescript } from "react-icons/si";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectGrid } from "@/components/project-card";
 import { Bar, Block } from "@/components/ui";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
@@ -131,10 +131,8 @@ export default function Home() {
 
       {/* Projects */}
       <Block id="work" label="work" title="Things I’ve shipped.">
-        <div className="mx-auto grid max-w-3xl gap-5 md:grid-cols-2">
-          {projects.map((p, i) => (
-            <ProjectCard key={p.slug} project={p} featured={i === 0} />
-          ))}
+        <div className="mx-auto max-w-6xl">
+          <ProjectGrid projects={projects} />
         </div>
       </Block>
 

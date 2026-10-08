@@ -51,6 +51,165 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "stack",
+    name: "Stack",
+    tagline: "A local-first reading app that makes you remember what you read",
+    role: "Solo: product, design, Android app, sync, AI layer",
+    year: "2026",
+    stack: ["Next.js 16", "TypeScript", "Capacitor 8", "IndexedDB", "Supabase", "Deno Edge Functions", "Sarvam · Gemini · Groq · OpenAI · Claude", "pdf.js"],
+    cover: "/projects/stack-site.png",
+    links: [
+      { label: "GitHub", href: "https://github.com/chhari07/stackforge" },
+      // { label: "Play Store", href: "TODO" },
+    ],
+    problem:
+      "People read a lot of articles, PDFs and news every day and forget almost all of it a week later. Read-later apps save links but never bring them back. Stack turns any line you select into a note that remembers where it came from, then shows your old highlights again on a spaced schedule, so what you read stays with you.",
+    highlights: [
+      "Local-first: everything lives in IndexedDB and works offline with no account; sign-in only adds sync across devices.",
+      "Sync with a server-numbered seq per write: upload local changes, pull rows newer than the last one seen; unsynced local edits win.",
+      "Stack AI runs in one Supabase Edge Function: checks sign-in, enforces a per-person daily limit, then falls back across five engines (Sarvam → Gemini → Groq → OpenAI → Claude).",
+      "Daily review: 3 old highlights a day, pushed out 3 days, then ~2.5× longer each time you remember them.",
+      "One Next.js codebase ships the website and a native Android app (Capacitor), with Java plugins for music, sharing and PDF discovery.",
+    ],
+    architecture: {
+      summary:
+        "A Next.js 16 app exported as a static bundle and wrapped in Capacitor for Android. The phone has no server of its own: data lives on the device, sync and AI go to Supabase, and no API key ever ships in the app.",
+      flow: [
+        "Reader saves an article, PDF or shared link (Share to Stack from any app)",
+        "Reader mode cleans the page (Readability + DOMPurify); selecting text makes a highlight or note",
+        "Every write goes to IndexedDB and is marked as changed, so it works offline",
+        "When signed in, changes upload to the Supabase items table; rows from other devices download by seq",
+        "Optional Stack AI calls the Edge Function: sign-in check → daily limit → engine fallback chain → streamed answer with page and note links",
+        "Each morning the review picks 3 due highlights and reschedules them by how well you remembered",
+      ],
+    },
+    decisions: [
+      {
+        chose: "Local-first IndexedDB, with sync as an optional extra",
+        rejected: "Cloud database as the source of truth with a required account",
+        why: "Reading happens on trains and in bad signal; the app has to open instantly and work with no network and no sign-up.",
+      },
+      {
+        chose: "Server-assigned seq numbers and 'unsynced local edit wins'",
+        rejected: "Timestamp-based last-write-wins",
+        why: "Phone clocks drift; a server counter gives every device a clean 'give me everything after N' cursor, and nothing you just typed is overwritten.",
+      },
+      {
+        chose: "AI only in a Supabase Edge Function with an engine fallback chain",
+        rejected: "Calling one provider straight from the app",
+        why: "Keys never ship in the APK, limits are enforced server-side, and free tiers can be stacked so one provider being down or out of credit doesn't break the feature.",
+      },
+      {
+        chose: "One Next.js codebase exported to Capacitor",
+        rejected: "A separate React Native app",
+        why: "One solo developer, one codebase for web and Android; native Java plugins only where the web can't reach (music, share sheet, files).",
+      },
+    ],
+    failures: [
+      { what: "No network, or the user never signs in", handling: "Everything reads and writes IndexedDB; changes queue and upload on the next sync." },
+      { what: "The same item edited on two devices", handling: "Local edits not yet uploaded win; everything else follows the server's seq order." },
+      { what: "An AI engine is down, busy or out of credit", handling: "The function moves to the next engine; the app gets a reset event and drops the partial text." },
+      { what: "A person hits the daily AI limit", handling: "The function refuses with a clear 429 message; the rest of the app keeps working." },
+      { what: "A feed URL points at a private or local address", handling: "The website's feed proxy resolves the host and re-checks every redirect; private IPs are refused." },
+    ],
+    metrics: [
+      { label: "AI engines in the fallback chain", value: "5" },
+      { label: "News topics", value: "12" },
+      { label: "Highlights reviewed per day", value: "3" },
+      { label: "Daily AI requests per person", value: "50", note: "configurable" },
+    ],
+    next: ["Play Store release", "Grow testers from the soft launch", "iOS build (Capacitor project already in place)"],
+    system: {
+      caption: "No server on the phone: data lives on the device; sync and AI go to Supabase; no key ships in the app.",
+      zones: [
+        { label: "android · capacitor 8", cols: [1, 1], rows: [0, 2] },
+        { label: "supabase", cols: [2, 2], rows: [0, 2] },
+        { label: "ai engines", cols: [3, 3], rows: [0, 0] },
+      ],
+      nodes: [
+        { id: "reader", label: "Reader", sub: "save · highlight · review · focus", kind: "actor", col: 0, row: 1 },
+        { id: "sources", label: "News + web", sub: "BBC · The Hindu · HN · any RSS feed", kind: "external", col: 0, row: 2 },
+        { id: "native", label: "Native plugins", sub: "Media3 music · share card · PDF discovery", kind: "service", col: 1, row: 0 },
+        { id: "app", label: "Stack app", sub: "Next.js 16 static export · reader mode · pdf.js", kind: "client", col: 1, row: 1 },
+        { id: "idb", label: "IndexedDB", sub: "local-first · every write tracked for sync", kind: "store", col: 1, row: 2 },
+        { id: "ai", label: "AI function", sub: "sign-in check · daily limit · streams NDJSON", kind: "gate", col: 2, row: 0 },
+        { id: "db", label: "Postgres", sub: "items table · server seq · RLS · PDF storage", kind: "store", col: 2, row: 1 },
+        { id: "auth", label: "Supabase Auth", sub: "Google · email", kind: "external", col: 2, row: 2 },
+        { id: "llm", label: "Fallback chain", sub: "Sarvam → Gemini → Groq → OpenAI → Claude", kind: "ai", col: 3, row: 0 },
+      ],
+      edges: [
+        { from: "reader", to: "app", label: "uses" },
+        { from: "app", to: "sources", label: "native\nHTTP" },
+        { from: "app", to: "native", label: "plugins" },
+        { from: "app", to: "idb", label: "every write" },
+        { from: "app", to: "ai", label: "summarize\n· ask", bend: -12 },
+        { from: "ai", to: "llm", label: "fallback" },
+        { from: "idb", to: "db", label: "upload ·\npull > seq", both: true, bend: 12 },
+        { from: "db", to: "auth", label: "user_id", dashed: true },
+      ],
+    },
+    diagrams: [
+      {
+        type: "flow",
+        title: "Save → Highlight → Remember",
+        caption: "The product loop every screen serves.",
+        steps: [
+          { label: "save from anywhere", parallel: [
+            { label: "Article / news", kind: "external", note: "reader mode: Readability + DOMPurify" },
+            { label: "PDF / EPUB", kind: "client", note: "pdf.js reader · phone files · Telegram import" },
+            { label: "Share to Stack", kind: "service", note: "from Chrome, WhatsApp, YouTube, Files" },
+          ] },
+          { label: "Select a line", kind: "actor", note: "Highlight · + Note · Share" },
+          { label: "Note saved with its source", kind: "store", note: "painted back with the CSS Custom Highlight API" },
+          { label: "Daily review", kind: "client", note: "3 due highlights each morning, also in the notification" },
+          { label: "Export or search", kind: "service", note: "one search across everything · Markdown export to Obsidian / Notion" },
+        ],
+      },
+      {
+        type: "flow",
+        title: "Stack AI request",
+        caption: "Every AI feature goes through one Edge Function; the key never leaves the server.",
+        steps: [
+          { label: "Reader taps Summarize, Ask your Stack or Ask this PDF", kind: "actor" },
+          { label: "Consent prompt in the app", kind: "gate", branch: "AI switched off in Settings → the buttons are hidden" },
+          { label: "Verify Supabase sign-in", kind: "gate", branch: "not signed in → sign-in prompt" },
+          { label: "Daily limit (ai_take in Postgres)", kind: "gate", branch: "over 50 today → 429, resets at midnight UTC" },
+          { label: "engines, tried in order", parallel: [
+            { label: "Sarvam AI", kind: "ai" },
+            { label: "Google Gemini", kind: "ai", note: "first for PDFs" },
+            { label: "Groq", kind: "ai" },
+            { label: "OpenAI", kind: "ai" },
+            { label: "Claude", kind: "ai" },
+          ], note: "only engines with a key; on failure the next one takes over" },
+          { label: "Streamed answer", kind: "client", note: "citations become page and note links" },
+        ],
+      },
+      {
+        type: "flow",
+        title: "Sync",
+        caption: "Local-first: the device is always the source of truth for unsynced edits.",
+        steps: [
+          { label: "Edit on the device", kind: "actor" },
+          { label: "Write to IndexedDB + mark changed", kind: "store", note: "the app never waits on the network" },
+          { label: "Signed in?", kind: "gate", branch: "no → stays local; backup file still works" },
+          { label: "Upload changed items", kind: "service", note: "one row per item; the server stamps the next seq" },
+          { label: "Download rows with seq > last seen", kind: "service", note: "pages of rows, cursor saved per account" },
+          { label: "Merge", kind: "store", branch: "item edited here but not uploaded → local copy wins" },
+        ],
+      },
+      {
+        type: "states",
+        title: "Highlight review schedule",
+        caption: "A small spaced-repetition loop; 'Got it' pushes a highlight further out each time.",
+        states: ["NEW", "DUE NEXT DAY", "GOT IT · 3 DAYS", "× 2.5 EACH TIME", "UP TO 365 DAYS"],
+        exits: [
+          { state: "SHOW AGAIN SOON", note: "back tomorrow with a 1-day interval" },
+          { state: "STOP", note: "never shown in review again" },
+        ],
+      },
+    ],
+  },
+  {
     slug: "closeby",
     name: "CloseBy",
     tagline: "AI-assisted marketplace for neighbourhood shops",
