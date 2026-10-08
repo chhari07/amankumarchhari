@@ -14,6 +14,11 @@
   --color-moss: #2fa35a;
   --color-rust: #ee5a24;
   --color-navy: #2f6fde;
+  /* diagram node kinds, macOS system hues */
+  --color-violet: #8e5bd8;
+  --color-amber: #e0901a;
+  --color-teal: #1597a8;
+  --color-pink: #d6408f;
   --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
   --font-display: var(--font-sans);

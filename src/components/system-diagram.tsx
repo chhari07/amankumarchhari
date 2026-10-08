@@ -104,9 +104,11 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
           className="h-auto w-full min-w-[720px] font-mono"
         >
           <defs>
-            <marker id={marker} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0 0 L10 5 L0 10 z" className="fill-muted" />
-            </marker>
+            {usedKinds.map((k) => (
+              <marker key={k} id={`${marker}-${k}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0 L10 5 L0 10 z" className={kinds[k].tone.fill} />
+              </marker>
+            ))}
             <pattern id={`dots-${id}`} width="16" height="16" patternUnits="userSpaceOnUse">
               <circle cx="1" cy="1" r="0.8" className="fill-line" />
             </pattern>
@@ -122,8 +124,8 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
             const h = (z.rows[1] - z.rows[0]) * ROW + H + 44;
             return (
               <g key={z.label}>
-                <rect x={x} y={y} width={w} height={h} rx="14" className="fill-bg/50 stroke-dim" strokeDasharray="4 4" />
-                <text x={x + 8} y={y + 14} fontSize="10" letterSpacing="1.5" className="fill-dim">{z.label.toUpperCase()}</text>
+                <rect x={x} y={y} width={w} height={h} rx="14" className="fill-navy/[0.03] stroke-navy/30" strokeDasharray="4 4" />
+                <text x={x + 8} y={y + 14} fontSize="10" letterSpacing="1.5" className="fill-navy">{z.label.toUpperCase()}</text>
               </g>
             );
           })}
@@ -161,11 +163,11 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
                 <path
                   d={d}
                   fill="none"
-                  className="stroke-muted"
-                  strokeWidth="1.2"
+                  className={kinds[s.kind].tone.stroke}
+                  strokeWidth="1.3"
                   strokeDasharray={e.dashed ? "4 3" : undefined}
-                  markerEnd={`url(#${marker})`}
-                  markerStart={e.both ? `url(#${marker})` : undefined}
+                  markerEnd={`url(#${marker}-${s.kind})`}
+                  markerStart={e.both ? `url(#${marker}-${s.kind})` : undefined}
                 />
                 {e.label && <EdgeLabel x={lx} y={ly} text={e.label} anchorStart={side} />}
               </g>
@@ -175,12 +177,13 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
           {/* nodes */}
           {design.nodes.map((n) => {
             const b = box(n);
-            const Icon = kinds[n.kind].icon;
+            const { icon: Icon, tone } = kinds[n.kind];
             return (
               <g key={n.id}>
-                <rect x={b.x} y={b.y + 3} width={W} height={H} rx="10" className="fill-line" />
-                <rect x={b.x} y={b.y} width={W} height={H} rx="10" className={`fill-surface2 ${n.kind === "gate" ? "stroke-fg" : "stroke-dim"}`} strokeWidth="1.2" />
-                <Icon x={b.x + 10} y={b.y + 10} size={15} className="text-muted" aria-hidden />
+                <rect x={b.x} y={b.y + 3} width={W} height={H} rx="10" className={tone.fillTint} />
+                <rect x={b.x} y={b.y} width={W} height={H} rx="10" className={`fill-surface2 ${tone.stroke}`} strokeWidth="1.2" />
+                <rect x={b.x + 6} y={b.y + 6} width={23} height={23} rx="6" className={tone.fillTint} />
+                <Icon x={b.x + 10} y={b.y + 10} size={15} className={tone.text} aria-hidden />
                 <text x={b.x + 32} y={b.y + 22} fontSize="13" fontWeight="700" className="fill-bright">{n.label}</text>
                 {n.sub && (
                   <text x={b.x + 10} y={b.y + 41} fontSize="10.5" className="fill-muted">
@@ -198,9 +201,9 @@ export function SystemDiagram({ design, id }: { design: SystemDesign; id: string
       {/* legend */}
       <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
         {usedKinds.map((k) => {
-          const Icon = kinds[k].icon;
+          const { icon: Icon, tone, tag } = kinds[k];
           return (
-            <li key={k} className="flex items-center gap-1.5"><Icon aria-hidden /> {kinds[k].tag}</li>
+            <li key={k} className="flex items-center gap-1.5"><Icon className={tone.text} aria-hidden /> {tag}</li>
           );
         })}
         <li className="flex items-center gap-1.5"><span className="inline-block w-5 border-t border-muted" /> call</li>

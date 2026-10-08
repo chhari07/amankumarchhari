@@ -91,7 +91,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
             <ol className="card overflow-hidden">
               {project.architecture.flow.map((step, i) => (
                 <li key={step} className="flex gap-4 border-b border-line px-4 py-2 last:border-b-0">
-                  <span className="text-dim">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="text-navy">{String(i + 1).padStart(2, "0")}</span>
                   <span>{step}</span>
                 </li>
               ))}
@@ -103,8 +103,8 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
             <div className="space-y-4">
               {project.decisions.map((d) => (
                 <pre key={d.chose} className="card whitespace-pre-wrap p-4 font-mono text-[13px]">
-                  <span className="block text-bright">+ {d.chose}</span>
-                  <span className="block text-dim line-through">- {d.rejected}</span>
+                  <span className="block text-bright"><span className="text-moss">+</span> {d.chose}</span>
+                  <span className="block text-dim line-through decoration-rust/60"><span className="text-rust">-</span> {d.rejected}</span>
                   <span className="mt-2 block text-muted">  {d.why}</span>
                 </pre>
               ))}
