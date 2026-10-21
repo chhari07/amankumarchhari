@@ -37,6 +37,9 @@ export type Project = {
   year: string;
   stack: string[];
   cover?: string; // path under /public, e.g. "/projects/closeby.png"
+  card?: string; // banner shown on the home Work grid, e.g. "/projects/cards/closeby.webp"
+  banner?: string; // wide banner at the top of the case study, e.g. "/projects/cards/closeby-wide.webp"
+  anatomy?: { src: string; title: string }; // interactive isometric figure, first on the Diagrams tab
   links: { label: string; href: string }[];
   problem: string;
   highlights: string[];
@@ -58,6 +61,8 @@ export const projects: Project[] = [
     year: "2026",
     stack: ["Next.js 16", "TypeScript", "Capacitor 8", "IndexedDB", "Supabase", "Deno Edge Functions", "Sarvam · Gemini · Groq · OpenAI · Claude", "pdf.js"],
     cover: "/projects/stack-site.png",
+    card: "/projects/cards/stack.webp",
+    banner: "/projects/cards/stack-wide.webp",
     links: [
       { label: "GitHub", href: "https://github.com/chhari07/stackforge" },
       // { label: "Play Store", href: "TODO" },
@@ -217,6 +222,8 @@ export const projects: Project[] = [
     year: "2026",
     stack: ["Next.js 15", "TypeScript", "Supabase Postgres", "Clerk", "Claude API", "Razorpay"],
     cover: "/projects/closeby-site.png",
+    card: "/projects/cards/closeby.webp",
+    banner: "/projects/cards/closeby-wide.webp",
     links: [
       { label: "Live demo", href: "https://closeby-ashy.vercel.app" },
       { label: "GitHub", href: "https://github.com/chhari07/closeby" },
@@ -361,6 +368,9 @@ export const projects: Project[] = [
     year: "2026",
     stack: ["JavaScript", "Node.js", "Express", "Claude API", "Chrome MV3", "React"],
     cover: "/projects/scancart-site.png",
+    card: "/projects/cards/scancart.webp",
+    banner: "/projects/cards/scancart-wide.webp",
+    anatomy: { src: "/figures/scancart.html", title: "Scan bench: ScanCart's seven checks as probe heads feeding one Trust Score dial" },
     links: [
       { label: "GitHub", href: "https://github.com/chhari07/scancart.ai-" },
       { label: "Live demo", href: "https://scancartdemo.netlify.app" },
@@ -477,6 +487,8 @@ export const projects: Project[] = [
     year: "2026",
     stack: ["React", "Supabase", "Clerk", "Node.js", "BuilderBot"],
     cover: "/projects/orderly-site.png",
+    card: "/projects/cards/orderly.webp",
+    banner: "/projects/cards/orderly-wide.webp",
     links: [{ label: "Live demo", href: "https://orderly-blue.vercel.app" }],
     problem:
       "Kirana customers already order over WhatsApp, but owners lose track of messages. Orderly adds an always-on bot that answers price and stock questions from the live catalogue, with no app install for the buyer.",

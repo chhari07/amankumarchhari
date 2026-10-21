@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { LuArrowUpRight, LuPlus } from "react-icons/lu";
 import type { Project } from "@/content/projects";
@@ -63,18 +64,43 @@ function Tile({ project, wide }: { project: Project; wide?: boolean }) {
   );
 }
 
-export function ProjectGrid({ projects }: { projects: Project[] }) {
-  const [featured, ...rest] = projects;
+// Banner card: the whole image links to the case study (name and line are baked into the banner).
+function BannerCard({ project }: { project: Project }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <Tile project={featured} wide />
+    <Link
+      href={`/work/${project.slug}`}
+      aria-label={`${project.name} case study`}
+      className="group relative block overflow-hidden rounded-[1.75rem] shadow-[0_18px_40px_-18px_rgb(30_40_90/0.45)] ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_-20px_rgb(40_80_200/0.5)] focus-visible:outline-2 focus-visible:outline-offset-4"
+    >
+      <Image
+        src={project.card!}
+        alt={`${project.name}: ${project.tagline}`}
+        width={1600}
+        height={900}
+        sizes="(min-width: 640px) 50vw, 100vw"
+        className="w-full transition duration-500 group-hover:scale-[1.02]"
+      />
+      <span className="absolute right-4 top-4 grid size-9 place-items-center rounded-full bg-black/25 text-white opacity-0 backdrop-blur-md transition group-hover:opacity-100">
+        <LuArrowUpRight className="size-5" aria-hidden />
+      </span>
+    </Link>
+  );
+}
+
+export function ProjectGrid({ projects }: { projects: Project[] }) {
+  const banners = projects.filter((p) => p.card);
+  const [featured, ...rest] = projects.filter((p) => !p.card);
+  return (
+    <div className="grid gap-5 sm:grid-cols-2">
+      {banners.map((p) => <BannerCard key={p.slug} project={p} />)}
+      {featured && <Tile project={featured} wide={!banners.length} />}
       {rest.map((p) => <Tile key={p.slug} project={p} />)}
       <a
         href={site.links.github}
         target="_blank"
         rel="noreferrer"
         aria-label="More on GitHub"
-        className="grid min-h-24 place-items-center rounded-2xl border border-white/[0.05] bg-[#19191b] text-white/25 shadow-[0_12px_30px_-14px_rgb(0_0_0/0.45)] transition hover:text-white/60 sm:min-h-60"
+        className="grid min-h-24 place-items-center rounded-2xl border border-white/[0.05] bg-[#19191b] text-white/25 shadow-[0_12px_30px_-14px_rgb(0_0_0/0.45)] transition hover:text-white/60 sm:col-span-2"
       >
         <LuPlus className="size-12 stroke-1" aria-hidden />
       </a>

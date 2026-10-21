@@ -5,6 +5,7 @@ import {
   LuArrowLeft, LuChartBar, LuCircleAlert, LuExternalLink, LuGithub, LuLayers, LuListTodo, LuScale, LuTarget, LuZap,
 } from "react-icons/lu";
 import { notFound } from "next/navigation";
+import { AnatomyFrame } from "@/components/anatomy-frame";
 import { CaseTabs } from "@/components/case-tabs";
 import { DecisionDiagram, Diagram, FailureDiagram, Figure } from "@/components/diagram";
 import { SystemDiagram } from "@/components/system-diagram";
@@ -53,7 +54,11 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
         )}
       </header>
 
-      {project.cover && (
+      {project.banner ? (
+        <figure className="mt-10 overflow-hidden rounded-2xl sm:rounded-[1.75rem] shadow-[0_18px_40px_-18px_rgb(30_40_90/0.45)] ring-1 ring-black/5">
+          <Image src={project.banner} alt={`${project.name}: ${project.tagline}`} width={1584} height={396} priority className="w-full" />
+        </figure>
+      ) : project.cover && (
         <figure className="card group mt-10 overflow-hidden">
           <Image src={project.cover} alt={`${project.name} screenshot`} width={1600} height={900} priority className="w-full grayscale-[60%] transition duration-300 group-hover:grayscale-0" />
         </figure>
@@ -129,6 +134,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
           }
           diagrams={
             <div className="space-y-6 pt-8">
+              {project.anatomy && <AnatomyFrame src={project.anatomy.src} title={project.anatomy.title} />}
               <Figure title="System design" caption={project.system.caption} index={0}>
                 <SystemDiagram design={project.system} id={`${project.slug}-diagrams`} />
               </Figure>
