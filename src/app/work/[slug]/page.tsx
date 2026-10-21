@@ -28,7 +28,7 @@ const isTodo = (v: string) => v.startsWith("TODO");
 export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
   const project = getProject((await props.params).slug);
   if (!project) notFound();
-  const diagramCount = project.diagrams.length + 3; // + system design, decisions, failure paths
+  const diagramCount = project.diagrams.length + 3 + (project.userFlow ? 1 : 0) + (project.anatomy ? 1 : 0); // + system design, decisions, failure paths, figures
 
   return (
     <article className="py-10">
@@ -134,6 +134,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
           }
           diagrams={
             <div className="space-y-6 pt-8">
+              {project.userFlow && <AnatomyFrame src={project.userFlow.src} title={project.userFlow.title} />}
               {project.anatomy && <AnatomyFrame src={project.anatomy.src} title={project.anatomy.title} />}
               <Figure title="System design" caption={project.system.caption} index={0}>
                 <SystemDiagram design={project.system} id={`${project.slug}-diagrams`} />

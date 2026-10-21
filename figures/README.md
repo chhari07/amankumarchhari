@@ -8,3 +8,9 @@ Diagrams tab shows in an `<iframe>` (`src/components/anatomy-frame.tsx`).
 ```bash
 node figures/scancart/build.mjs        # light theme; add --dark for dark
 ```
+
+User flows (one staircase per case study, from `userflow/flows.mjs`):
+
+```bash
+node figures/userflow/build.mjs            # all four; or pass slugs, e.g. stack orderly
+```

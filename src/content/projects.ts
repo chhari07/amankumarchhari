@@ -39,7 +39,8 @@ export type Project = {
   cover?: string; // path under /public, e.g. "/projects/closeby.png"
   card?: string; // banner shown on the home Work grid, e.g. "/projects/cards/closeby.webp"
   banner?: string; // wide banner at the top of the case study, e.g. "/projects/cards/closeby-wide.webp"
-  anatomy?: { src: string; title: string }; // interactive isometric figure, first on the Diagrams tab
+  userFlow?: { src: string; title: string }; // isometric user-flow staircase (figures/userflow), first on the Diagrams tab
+  anatomy?: { src: string; title: string }; // interactive isometric figure, after the user flow on the Diagrams tab
   links: { label: string; href: string }[];
   problem: string;
   highlights: string[];
@@ -63,6 +64,7 @@ export const projects: Project[] = [
     cover: "/projects/stack-site.png",
     card: "/projects/cards/stack.webp",
     banner: "/projects/cards/stack-wide.webp",
+    userFlow: { src: "/figures/stack-flow.html", title: "Stack user flow: save, read, highlight, sync, ask AI and review, as a rising staircase" },
     links: [
       { label: "GitHub", href: "https://github.com/chhari07/stackforge" },
       // { label: "Play Store", href: "TODO" },
@@ -224,6 +226,7 @@ export const projects: Project[] = [
     cover: "/projects/closeby-site.png",
     card: "/projects/cards/closeby.webp",
     banner: "/projects/cards/closeby-wide.webp",
+    userFlow: { src: "/figures/closeby-flow.html", title: "CloseBy user flow: owner imports and approves stock, buyer browses and pays, owner fulfils" },
     links: [
       { label: "Live demo", href: "https://closeby-ashy.vercel.app" },
       { label: "GitHub", href: "https://github.com/chhari07/closeby" },
@@ -370,6 +373,7 @@ export const projects: Project[] = [
     cover: "/projects/scancart-site.png",
     card: "/projects/cards/scancart.webp",
     banner: "/projects/cards/scancart-wide.webp",
+    userFlow: { src: "/figures/scancart-flow.html", title: "ScanCart user flow: open a listing, scan, seven checks, one Trust Score, decide" },
     anatomy: { src: "/figures/scancart.html", title: "Scan bench: ScanCart's seven checks as probe heads feeding one Trust Score dial" },
     links: [
       { label: "GitHub", href: "https://github.com/chhari07/scancart.ai-" },
@@ -489,6 +493,7 @@ export const projects: Project[] = [
     cover: "/projects/orderly-site.png",
     card: "/projects/cards/orderly.webp",
     banner: "/projects/cards/orderly-wide.webp",
+    userFlow: { src: "/figures/orderly-flow.html", title: "Orderly user flow: WhatsApp message, bot answer, order, owner confirms, ready, done" },
     links: [{ label: "Live demo", href: "https://orderly-blue.vercel.app" }],
     problem:
       "Kirana customers already order over WhatsApp, but owners lose track of messages. Orderly adds an always-on bot that answers price and stock questions from the live catalogue, with no app install for the buyer.",
