@@ -11,22 +11,26 @@ const links = [
 
 export function Footer() {
   return (
-    <footer id="contact" className="mx-auto w-full max-w-xl scroll-mt-20 py-16">
-      <Pill label="contact" />
-      <p className="mt-8 text-bright">Let&apos;s connect</p>
-      <p className="mt-1 text-muted">
-        Available immediately · {site.location.split("·")[1]?.trim()}.
-      </p>
-      <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-muted">
-        {links.map(({ icon: Icon, label, href }) => (
-          <li key={label}>
-            <a href={href} className="flex items-center gap-1.5 transition hover:text-bright">
-              <Icon className="size-3.5" aria-hidden /> {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <p className="mt-16 text-center text-xs text-dim">© {new Date().getFullYear()} {site.name}</p>
+    <footer id="contact" className="w-full scroll-mt-20 border-t border-line py-14">
+      <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <Pill label="contact" center={false} />
+          <p className="display ink mt-6 text-3xl sm:text-4xl">Let&apos;s connect.</p>
+          <p className="mt-2 text-muted">
+            Available immediately · {site.location.split("·")[1]?.trim()}.
+          </p>
+        </div>
+        <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
+          {links.map(({ icon: Icon, label, href }) => (
+            <li key={label}>
+              <a href={href} className="flex items-center gap-1.5 transition hover:text-bright">
+                <Icon className="size-4" aria-hidden /> {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="mt-14 text-xs text-dim">© {new Date().getFullYear()} {site.name}</p>
     </footer>
   );
 }

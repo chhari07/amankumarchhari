@@ -1,7 +1,6 @@
 // One entry per case study. Each page renders two depths:
 //   1. the 30-second block (summary, problem, highlights, links)
 //   2. the deep section (architecture, decisions, failures, numbers)
-// Anything marked TODO is evidence you still need to add.
 
 export type Decision = { chose: string; rejected: string; why: string };
 export type Metric = { label: string; value: string; note?: string };
@@ -67,7 +66,6 @@ export const projects: Project[] = [
     userFlow: { src: "/figures/stack-flow.html", title: "Stack user flow: save, read, highlight, sync, ask AI and review, as a rising staircase" },
     links: [
       { label: "GitHub", href: "https://github.com/chhari07/stackforge" },
-      // { label: "Play Store", href: "TODO" },
     ],
     problem:
       "People read a lot of articles, PDFs and news every day and forget almost all of it a week later. Read-later apps save links but never bring them back. Stack turns any line you select into a note that remembers where it came from, then shows your old highlights again on a spaced schedule, so what you read stays with you.",
@@ -121,7 +119,6 @@ export const projects: Project[] = [
     ],
     metrics: [
       { label: "AI engines in the fallback chain", value: "5" },
-      { label: "News topics", value: "12" },
       { label: "Highlights reviewed per day", value: "3" },
       { label: "Daily AI requests per person", value: "50", note: "configurable" },
     ],
@@ -230,7 +227,6 @@ export const projects: Project[] = [
     links: [
       { label: "Live demo", href: "https://closeby-ashy.vercel.app" },
       { label: "GitHub", href: "https://github.com/chhari07/closeby" },
-      // { label: "Demo video", href: "TODO" },
     ],
     problem:
       "Neighbourhood shop owners have no time to type a catalogue, and buyers can't see what a shop near them has in stock. CloseBy lets owners import stock from a shelf photo or voice list, and lets buyers order and pay online from shops nearby.",
@@ -276,8 +272,6 @@ export const projects: Project[] = [
     metrics: [
       { label: "Eval cases", value: "27" },
       { label: "Order states", value: "7" },
-      { label: "p50 import latency", value: "TODO", note: "measure and fill in" },
-      { label: "Cost per import", value: "TODO", note: "from cost logs" },
     ],
     next: ["Grow the eval set to ~100 hard cases", "Record a 90-second demo video", "Stock substitution suggestions"],
     system: {
@@ -376,7 +370,7 @@ export const projects: Project[] = [
     userFlow: { src: "/figures/scancart-flow.html", title: "ScanCart user flow: open a listing, scan, seven checks, one Trust Score, decide" },
     anatomy: { src: "/figures/scancart.html", title: "Scan bench: ScanCart's seven checks as probe heads feeding one Trust Score dial" },
     links: [
-      { label: "GitHub", href: "https://github.com/chhari07/scancart.ai-" },
+      { label: "GitHub", href: "https://github.com/chhari07/scancart-ai" },
       { label: "Live demo", href: "https://scancartdemo.netlify.app" },
     ],
     problem:
@@ -421,8 +415,6 @@ export const projects: Project[] = [
     ],
     metrics: [
       { label: "Agents per scan", value: "6 + 1" },
-      { label: "End-to-end latency", value: "TODO" },
-      { label: "Cost per scan", value: "TODO" },
     ],
     next: ["Labelled eval set of real vs fake listings", "Cache repeat scans of the same listing"],
     system: {
@@ -521,7 +513,6 @@ export const projects: Project[] = [
     ],
     failures: [
       { what: "Bot process crashes", handling: "Supervisor restarts it; missed heartbeats show in the owner app." },
-      { what: "Upstream WhatsApp library bug with @lid ids", handling: "TODO: document the workaround or current status." },
     ],
     metrics: [{ label: "Heartbeat interval", value: "45 s" }],
     next: ["Hinglish message → structured, priced order with an LLM", "Eval set of real order messages"],

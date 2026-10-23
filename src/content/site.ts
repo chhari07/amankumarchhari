@@ -1,20 +1,20 @@
 // Everything personal lives here. Edit this file, not the components.
 export const site = {
   name: "Aman Kumar Chhari",
-  role: "Full-stack & applied AI engineer",
-  location: "Guna, Madhya Pradesh · open to Gurgaon, Bengaluru or remote",
-  tagline: "I design, build and ship full-stack applications end to end.",
+  role: "Applied AI Engineer (Full-Stack)",
+  location: "Guna, Madhya Pradesh · open to relocate",
+  tagline: "I ship AI features inside real products, with the guardrails that make them safe to run.",
   intro:
-    "Frontend, APIs, databases, auth, payments and AI features. I take an idea to a working, deployed product, from web apps and dashboards to marketplaces, bots and browser extensions.",
+    "One gateway for every model call, spend caps, tool use, human approval and eval cases. I build end to end, from system design to deployment.",
   about:
-    "Full-stack and applied AI engineer. Since 2023 I've built client products from first brief to deployment, covering frontend, APIs, databases, payments and AI features.",
+    "Applied AI engineer who ships AI features inside real products, with guardrails built in. I work alone and build end to end: system design, typed backend, UI, payments and deployment. Freelance since 2023; B.Tech CSE 2026.",
   // "What I'm looking for" section: keep in sync with the resume
   jobSearch: {
-    roles: ["Full-stack engineer", "Applied AI engineer", "Software engineer (SDE-1)"],
+    roles: ["Applied AI engineer", "Full-stack engineer", "Software engineer (SDE-1)"],
     details: [
       { label: "Type", value: "Full-time" },
       { label: "Level", value: "Entry level · B.Tech CSE, 2026" },
-      { label: "Location", value: "Gurgaon, Bengaluru or remote" },
+      { label: "Location", value: "Open to relocate" },
       { label: "Start", value: "Immediately" },
     ],
     teams: ["Commerce & merchant tools", "WhatsApp & messaging", "AI features in real products", "Payments & checkout"],
@@ -36,25 +36,36 @@ export const site = {
     years: "2022 – 2026",
   },
   experience: [
-    { role: "Freelance Full-Stack & AI Developer", org: "Independent / three-person studio · Remote", when: "Feb 2023 – Present" },
+    {
+      role: "Freelance Full-Stack & AI Developer",
+      org: "Independent · Guna, MP (Remote)",
+      when: "Feb 2023 – Present",
+      points: [
+        { name: "Rent It, vehicle rental platform", when: "Aug 2025", href: "https://github.com/chhari07/RENT-IT", text: "React and Tailwind app where customers browse vehicles, book and pay through Razorpay, with Firebase sign-in, protected routes, a map section and booking history." },
+        { name: "Gurudev Public School, Guna", when: "Oct 2025", text: "The school's 15-page website in React, Vite and Tailwind: academics, facilities, gallery, news, director's and principal's desk, holiday homework and the public disclosure page." },
+      ],
+    },
     { role: "Web Development Intern", org: "Zidio Development · Remote", when: "Aug – Sep 2024" },
   ],
+  // All entered solo; `href` links the certificate hosted under /public/certificates.
   achievements: [
-    "National Finalist, HackGSon Hackathon",
-    "Semi-Finalist, Smart India Hackathon",
-    "Finalist, National e-Governance Pitch-a-thon",
-    "Winner, Reimagine Web Dev Hackathon",
-    "Winner, Component Making Hackathon",
-    "7th Rank, Skill-A-Thon",
+    { text: "Finalist (600+ teams), Hacksagon 2025, ABV-IIITM Gwalior, as team MANAD", href: "/certificates/hacksagon-2025-round3.pdf" },
+    { text: "Selected pitch, Rajasthan AI Builders Pitch-a-Thon 2026, Jaipur, with ScanCart.ai", href: "/certificates/rajasthan-ai-builders-2026-scancart.jpg" },
+    { text: "National Finalist, HackGSon Hackathon" },
+    { text: "Semi-Finalist, Smart India Hackathon" },
+    { text: "Finalist, National e-Governance Pitch-a-thon" },
+    { text: "Winner, Reimagine Web Dev Hackathon" },
+    { text: "Winner, Component Making Hackathon" },
+    { text: "7th Rank, Skill-A-Thon 2024" },
   ],
-  // Dock tiles + skill bars. `bg`/`fg` colour the dock icon; `level` is your own 0–100 rating.
+  // Dock tiles + "used in" rows. `bg`/`fg` colour the dock icon.
   stack: [
-    { name: "Next.js", short: "Nx", bg: "#111111", fg: "#ffffff", level: 90 },
-    { name: "React", short: "Re", bg: "#20232a", fg: "#61dafb", level: 90 },
-    { name: "TypeScript", short: "Ts", bg: "#3178c6", fg: "#ffffff", level: 85 },
-    { name: "Node.js", short: "Nd", bg: "#3c9a4f", fg: "#ffffff", level: 80 },
-    { name: "Postgres", short: "Pg", bg: "#d6e6f5", fg: "#336791", level: 75 },
-    { name: "Claude API", short: "Ai", bg: "#d97757", fg: "#ffffff", level: 80 },
+    { name: "Next.js", short: "Nx", bg: "#111111", fg: "#ffffff", usedIn: ["Stack", "CloseBy"] },
+    { name: "React", short: "Re", bg: "#20232a", fg: "#61dafb", usedIn: ["ScanCart", "Orderly", "Rent It"] },
+    { name: "TypeScript", short: "Ts", bg: "#3178c6", fg: "#ffffff", usedIn: ["Stack", "CloseBy"] },
+    { name: "Node.js", short: "Nd", bg: "#3c9a4f", fg: "#ffffff", usedIn: ["ScanCart", "Orderly"] },
+    { name: "Postgres", short: "Pg", bg: "#d6e6f5", fg: "#336791", usedIn: ["CloseBy", "Orderly"] },
+    { name: "Claude API", short: "Ai", bg: "#d97757", fg: "#ffffff", usedIn: ["CloseBy", "ScanCart", "Stack"] },
   ],
   builds: ["Web apps", "APIs & backends", "Dashboards & SaaS", "Auth & payments", "AI features", "Browser extensions"],
   avatar: "/avatar-me.jpg", // square headshot in /public
@@ -73,8 +84,8 @@ export const site = {
   ],
   skills: {
     Frontend: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
-    Backend: ["Node.js", "Express", "Supabase Postgres", "Clerk", "Razorpay"],
-    "Applied AI": ["Claude API", "Tool use", "Zod-validated output", "LLM evals"],
+    Backend: ["Node.js", "Express", "FastAPI", "Python", "Supabase Postgres", "Clerk", "Razorpay"],
+    "Applied AI": ["Generative AI", "Claude API", "OpenAI API", "Agentic workflows", "Multi-agent (Fetch.ai uAgents)", "Tool use", "Prompt engineering", "Structured outputs (Zod)", "Guardrails", "Human-in-the-loop", "LLM evals", "LLM observability"],
     Infra: ["Vercel", "Netlify", "GitHub Actions", "Linux"],
   },
 };

@@ -13,7 +13,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: `${site.name} · ${site.role}`, template: `%s · ${site.name}` },
   description: site.tagline,
-  openGraph: { title: site.name, description: site.tagline, type: "website" },
+  openGraph: { title: `${site.name} · ${site.role}`, description: site.tagline, type: "website" },
+  twitter: { card: "summary_large_image", title: `${site.name} · ${site.role}`, description: site.tagline },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${sans.variable} ${mono.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">
         <Nav />
-        <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-5xl flex-col px-4 sm:px-8">
+        <div className="flex min-h-[calc(100vh-4rem)] w-full flex-col px-4 sm:px-8 lg:px-14 2xl:px-20">
           <main className="flex-1">{children}</main>
           <Footer />
         </div>

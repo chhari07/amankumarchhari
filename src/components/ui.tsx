@@ -33,9 +33,9 @@ export function Block({
   className?: string;
 }) {
   return (
-    <section id={id} className={`scroll-mt-20 py-14 ${className}`}>
+    <section id={id} className={`scroll-mt-20 py-16 lg:py-20 ${className}`}>
       <Pill label={label} />
-      {title && <h2 className="display ink mx-auto mt-6 max-w-2xl text-center text-4xl sm:text-5xl">{title}</h2>}
+      {title && <h2 className="display ink mx-auto mt-6 max-w-4xl text-center text-4xl sm:text-5xl lg:text-6xl">{title}</h2>}
       <div className={title ? "mt-12" : "mt-8"}>{children}</div>
     </section>
   );
@@ -57,18 +57,6 @@ export function IconText({ icon: Icon, children, className = "" }: { icon: IconT
     <span className={`inline-flex items-center gap-2 ${className}`}>
       <Icon className="size-[1.05em] shrink-0" aria-hidden />
       {children}
-    </span>
-  );
-}
-
-/** Thin rounded progress bar with a percentage. */
-export function Bar({ value }: { value: number }) {
-  return (
-    <span className="flex flex-1 items-center gap-3" aria-label={`${value}%`}>
-      <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-line">
-        <span className="block h-full rounded-full bg-bright" style={{ width: `${value}%` }} />
-      </span>
-      <span className="w-9 text-right text-xs tabular-nums text-muted">{value}%</span>
     </span>
   );
 }
