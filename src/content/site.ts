@@ -42,7 +42,7 @@ export const site = {
       when: "Feb 2023 – Present",
       points: [
         { name: "Rent It, vehicle rental platform", when: "Aug 2025", href: "https://github.com/chhari07/RENT-IT", text: "React and Tailwind app where customers browse vehicles, book and pay through Razorpay, with Firebase sign-in, protected routes, a map section and booking history." },
-        { name: "Gurudev Public School, Guna", when: "Oct 2025", text: "The school's 15-page website in React, Vite and Tailwind: academics, facilities, gallery, news, director's and principal's desk, holiday homework and the public disclosure page." },
+        { name: "Gurudev Public School, Guna", when: "Oct 2025", href: "https://github.com/chhari07/gurudev-public-school-guna", text: "The school's 15-page website in React, Vite and Tailwind: academics, facilities, gallery, news, director's and principal's desk, holiday homework and the public disclosure page." },
       ],
     },
     { role: "Web Development Intern", org: "Zidio Development · Remote", when: "Aug – Sep 2024" },
@@ -50,10 +50,9 @@ export const site = {
   // All entered solo; `href` links the certificate hosted under /public/certificates.
   achievements: [
     { text: "Finalist (600+ teams), Hacksagon 2025, ABV-IIITM Gwalior, as team MANAD", href: "/certificates/hacksagon-2025-round3.pdf" },
-    { text: "Selected pitch, Rajasthan AI Builders Pitch-a-Thon 2026, Jaipur, with ScanCart.ai", href: "/certificates/rajasthan-ai-builders-2026-scancart.jpg" },
+    { text: "Selected pitch, Rajasthan AI Builders Pitch-a-Thon 2026 (National Conference on e-Governance), Jaipur, with ScanCart.ai", href: "/certificates/rajasthan-ai-builders-2026-scancart.jpg" },
     { text: "National Finalist, HackGSon Hackathon" },
     { text: "Semi-Finalist, Smart India Hackathon" },
-    { text: "Finalist, National e-Governance Pitch-a-thon" },
     { text: "Winner, Reimagine Web Dev Hackathon" },
     { text: "Winner, Component Making Hackathon" },
     { text: "7th Rank, Skill-A-Thon 2024" },
