@@ -112,3 +112,21 @@ body {
   }
 
 }
+
+/* Experience dropdown: slide + fade open where the browser can animate <details> (falls back to instant) */
+.dropdown {
+  interpolate-size: allow-keywords;
+}
+.dropdown::details-content {
+  height: 0;
+  opacity: 0;
+  overflow: clip;
+  transition: height 0.35s ease, opacity 0.35s ease, content-visibility 0.35s allow-discrete;
+}
+.dropdown[open]::details-content {
+  height: auto;
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dropdown::details-content { transition: none; }
+}

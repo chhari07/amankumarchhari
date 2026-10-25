@@ -27,7 +27,7 @@ export function CaseTabs({ text, diagrams, count }: { text: React.ReactNode; dia
 
   return (
     <div>
-      <div role="tablist" aria-label="Case study view" className="sticky top-14 z-10 flex flex-wrap items-center gap-2 border-b border-line bg-bg/90 py-3 backdrop-blur">
+      <div role="tablist" aria-label="Case study view" className="sticky top-11 z-10 flex flex-wrap items-center gap-2 border-b border-line bg-bg/90 py-3 backdrop-blur">
         {tabs.map((t) => (
           <button
             key={t.id}

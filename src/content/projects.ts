@@ -4,6 +4,8 @@
 
 export type Decision = { chose: string; rejected: string; why: string };
 export type Metric = { label: string; value: string; note?: string };
+// JMeter runs against a local copy of the project (mock LLMs, local Postgres).
+export type LoadTests = { caption: string; rows: { test: string; load: string; result: string }[] };
 
 // Diagrams rendered on each case study's "diagrams" tab.
 export type NodeKind = "actor" | "client" | "service" | "ai" | "store" | "external" | "gate";
@@ -47,6 +49,7 @@ export type Project = {
   decisions: Decision[];
   failures: { what: string; handling: string }[];
   metrics: Metric[];
+  loadTests?: LoadTests;
   next: string[];
   system: SystemDesign;
   diagrams: Diagram[];
@@ -56,10 +59,10 @@ export const projects: Project[] = [
   {
     slug: "stack",
     name: "Stack",
-    tagline: "A local-first reading app that makes you remember what you read",
+    tagline: "A local-first reading app with spaced review of highlights",
     role: "Solo: product, design, Android app, sync, AI layer",
     year: "2026",
-    stack: ["Next.js 16", "TypeScript", "Capacitor 8", "IndexedDB", "Supabase", "Deno Edge Functions", "Sarvam · Gemini · Groq · OpenAI · Claude", "pdf.js"],
+    stack: ["Next.js 16", "TypeScript", "Capacitor 8", "IndexedDB", "Supabase", "Deno Edge Functions", "Sarvam · Gemini · Groq · OpenAI · Claude", "pdf.js", "Apache JMeter"],
     cover: "/projects/stack-site.png",
     card: "/projects/cards/stack.webp",
     banner: "/projects/cards/stack-wide.webp",
@@ -75,6 +78,7 @@ export const projects: Project[] = [
       "Stack AI runs in one Supabase Edge Function: checks sign-in, enforces a per-person daily limit, then falls back across five engines (Sarvam → Gemini → Groq → OpenAI → Claude).",
       "Daily review: 3 old highlights a day, pushed out 3 days, then ~2.5× longer each time you remember them.",
       "One Next.js codebase ships the website and a native Android app (Capacitor), with Java plugins for music, sharing and PDF discovery.",
+      "Load-tested with JMeter: 500/500 requests served with the top two engines down (p95 1.6 s), and 80 simultaneous requests from one person stopped at exactly the 50/day limit.",
     ],
     architecture: {
       summary:
@@ -121,7 +125,18 @@ export const projects: Project[] = [
       { label: "AI engines in the fallback chain", value: "5" },
       { label: "Highlights reviewed per day", value: "3" },
       { label: "Daily AI requests per person", value: "50", note: "configurable" },
+      { label: "Served with top two engines down", value: "500/500", note: "JMeter · p95 1.6 s" },
     ],
+    loadTests: {
+      caption: "JMeter 5.6.3 against the real Deno edge function and the real ai_take() SQL; AI engines replaced by mock servers with realistic delays.",
+      rows: [
+        { test: "Healthy", load: "100 users × 5 summaries", result: "500/500 OK, p95 817 ms" },
+        { test: "Failover", load: "Sarvam + Gemini return 503", result: "500/500 served by Groq, p95 1.6 s" },
+        { test: "Total outage", load: "All engines down, 100 requests", result: "100/100 got a clean error message, no crash" },
+        { test: "Daily-limit race", load: "80 simultaneous requests, one person, limit 50", result: "Counter stopped at exactly 50; the rest got 429" },
+        { test: "Bad sign-in", load: "50 forged tokens", result: "50/50 rejected with 401" },
+      ],
+    },
     next: ["Play Store release", "Grow testers from the soft launch", "iOS build (Capacitor project already in place)"],
     system: {
       caption: "No server on the phone: data lives on the device; sync and AI go to Supabase; no key ships in the app.",
@@ -216,10 +231,10 @@ export const projects: Project[] = [
   {
     slug: "closeby",
     name: "CloseBy",
-    tagline: "AI-assisted marketplace for neighbourhood shops",
+    tagline: "AI-assisted hyperlocal marketplace for neighborhood shops",
     role: "Solo: design, frontend, backend, AI layer",
     year: "2026",
-    stack: ["Next.js 15", "TypeScript", "Supabase Postgres", "Clerk", "Claude API", "Razorpay"],
+    stack: ["Next.js 15", "TypeScript", "Supabase Postgres", "Clerk", "Claude API", "Razorpay", "Apache JMeter"],
     cover: "/projects/closeby-site.png",
     card: "/projects/cards/closeby.webp",
     banner: "/projects/cards/closeby-wide.webp",
@@ -229,10 +244,12 @@ export const projects: Project[] = [
       { label: "GitHub", href: "https://github.com/chhari07/closeby" },
     ],
     problem:
-      "Neighbourhood shop owners have no time to type a catalogue, and buyers can't see what a shop near them has in stock. CloseBy lets owners import stock from a shelf photo or voice list, and lets buyers order and pay online from shops nearby.",
+      "Neighborhood shop owners have no time to type a catalog, and buyers can't see what a shop near them has in stock. CloseBy lets owners import stock from a shelf photo or voice list, and lets buyers order and pay online from shops nearby.",
     highlights: [
-      "Every AI call passes one gateway: auth, rate limit, kill switch, daily spend cap, input cleaning, tool loop, cost logging.",
+      "Two-sided marketplace: geohash radius search, role-based dashboards, live order updates (Supabase Realtime) and in-order chat.",
+      "Every AI call passes one gateway: auth, rate limit, kill switch, daily spend cap, input cleaning, tool loop, cost logging. Under load, the spend cap blocked 100% of over-cap calls before any model call.",
       "AI only drafts (stock imports, restock ideas, chat replies); the owner approves before anything is saved.",
+      "Load-tested checkout with JMeter: 50 buyers racing for the last 5 units made exactly 5 orders, 0 oversells in 4/4 runs (row locks in one transaction).",
       "Razorpay flow holds stock until payment is confirmed and auto-refunds rejected orders.",
       "27 eval cases covering Hindi aliases, misspellings and gibberish input.",
     ],
@@ -270,9 +287,24 @@ export const projects: Project[] = [
       { what: "Prompt injection in uploaded text", handling: "Input cleaning plus tool-only output; the model can't trigger writes." },
     ],
     metrics: [
+      { label: "Oversells, last-stock race", value: "0", note: "50 buyers · 5 units · 4/4 runs" },
+      { label: "Concurrent orders, 0 errors", value: "800", note: "~160 orders/s" },
+      { label: "Search p95 at 50 users", value: "153 ms" },
       { label: "Eval cases", value: "27" },
-      { label: "Order states", value: "7" },
     ],
+    loadTests: {
+      caption: "JMeter 5.6.3 against a production build (1 Node process, 5-connection DB pool) with local Postgres, mock Claude and stubbed Clerk users.",
+      rows: [
+        { test: "Last-stock race", load: "50 buyers at the same instant, 5 units left (×4 runs)", result: "Exactly 5 orders, 45 clean rejections, stock 0: 0 oversells in 4/4 runs" },
+        { test: "Checkout load", load: "100 buyers × 8 COD orders", result: "800/800 OK, 0 stock mismatches, ~160 orders/s, p95 697 ms" },
+        { test: "Nearby search", load: "50 users, 30 s", result: "10,529 requests, 0 errors, ~350 req/s, p95 153 ms" },
+        { test: "Nearby search", load: "200 users, 60 s", result: "21,690 requests, 0 errors, ~360 req/s, p95 620 ms" },
+        { test: "AI rate limit", load: "1 user, 30 rapid calls", result: "15 allowed, 15 rejected with 429" },
+        { test: "AI spend cap", load: "User over the daily cap, 20 calls", result: "20/20 blocked, 0 model calls made" },
+        { test: "AI gateway load", load: "50 users × 5 calls", result: "250/250 OK" },
+        { test: "Forged Razorpay webhooks", load: "100 bad signatures", result: "100/100 rejected with 401" },
+      ],
+    },
     next: ["Grow the eval set to ~100 hard cases", "Record a 90-second demo video", "Stock substitution suggestions"],
     system: {
       caption: "One Next.js app; every model call goes through the AI gateway, every order through the state machine.",
@@ -360,10 +392,10 @@ export const projects: Project[] = [
   {
     slug: "scancart",
     name: "ScanCart.ai",
-    tagline: "Counterfeit and fake-review checks for Indian e-commerce",
+    tagline: "Parallel multi-agent trust scoring for Indian e-commerce",
     role: "Solo: extension, backend, agents",
     year: "2026",
-    stack: ["JavaScript", "Node.js", "Express", "Claude API", "Chrome MV3", "React"],
+    stack: ["JavaScript", "Node.js", "Express", "Claude API", "Chrome MV3", "React", "Clerk", "Firebase", "Apache JMeter"],
     cover: "/projects/scancart-site.png",
     card: "/projects/cards/scancart.webp",
     banner: "/projects/cards/scancart-wide.webp",
@@ -377,8 +409,9 @@ export const projects: Project[] = [
       "Shoppers on Indian marketplaces can't easily tell a fake product or a paid review from a real one. ScanCart runs checks on a listing and gives one Trust Score with the reasons behind it.",
     highlights: [
       "Six specialist agents run in parallel (reviews, ratings, seller, price, quality, alternatives); a compliance agent then uses the seller and price results.",
-      "Latency equals the slowest check, not the sum.",
-      "Failed checks are left out of the score and shown as \"X of 7 checks\", never guessed.",
+      "Latency equals the slowest check, not the sum: parallel fan-out cut scan time 2.8× (13.7 s of sequential model time → 4.8 s).",
+      "Failed checks are left out of the score and shown as \"X of 7 checks\", never guessed. With one agent hung, 100% of scans still scored.",
+      "JMeter at 50 concurrent users: 200/200 scans OK with no latency increase over a single user.",
       "Pitched at Rajasthan AI Builders Pitch-a-Thon 2026.",
     ],
     architecture: {
@@ -415,7 +448,20 @@ export const projects: Project[] = [
     ],
     metrics: [
       { label: "Agents per scan", value: "6 + 1" },
+      { label: "Faster than running checks in sequence", value: "2.8×", note: "13.7 s → 4.8 s" },
+      { label: "Scans OK at 50 concurrent users", value: "200/200" },
+      { label: "Scans still scored with one agent hung", value: "100%" },
     ],
+    loadTests: {
+      caption: "JMeter 5.6.3 against the Express backend with all seven agents; Claude replaced by a mock server answering in 1–3 s per call.",
+      rows: [
+        { test: "Baseline", load: "1 user × 20 scans", result: "Avg 4.8 s vs 13.7 s total model time per scan: 2.8× faster" },
+        { test: "Concurrency", load: "50 users × 4 scans", result: "200/200 OK, avg 4.76 s (same as 1 user), p95 5.8 s" },
+        { test: "Hung agent", load: "Review agent never answers, 20 scans", result: "20/20 still scored in ~12 s (10 s timeout, then fallback)" },
+        { test: "Validation", load: "50 bad payloads", result: "50/50 rejected with 400" },
+        { test: "Rate limit", load: "120 calls from one client", result: "100 allowed, then 429" },
+      ],
+    },
     next: ["Labelled eval set of real vs fake listings", "Cache repeat scans of the same listing"],
     system: {
       caption: "The extension never calls a model. The backend fans out, fuses the results and returns one verdict.",

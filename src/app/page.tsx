@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { IconType } from "react-icons";
-import { LuBriefcase, LuFileText, LuGithub, LuGauge, LuLayers, LuLinkedin, LuMail, LuShieldCheck, LuTrophy, LuUserCheck, LuFileCheck, LuDownload, LuArrowUpRight } from "react-icons/lu";
+import { LuBriefcase, LuFileText, LuGithub, LuGauge, LuLayers, LuLinkedin, LuMail, LuShieldCheck, LuTrophy, LuUserCheck, LuFileCheck, LuDownload, LuArrowUpRight, LuChevronDown } from "react-icons/lu";
 import { SiClaude, SiNextdotjs, SiNodedotjs, SiPostgresql, SiReact, SiTypescript } from "react-icons/si";
 import { ProjectCarousel } from "@/components/project-carousel";
 import { Block } from "@/components/ui";
@@ -78,7 +78,7 @@ export default function Home() {
           <br />
           &amp; {roleSub.replace(")", "").toLowerCase()}
         </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted">{site.tagline}</p>
+        <p className="mt-6 max-w-2xl text-lg text-muted lg:max-w-none lg:whitespace-nowrap">{site.tagline}</p>
         <a href="#hiring" className="mt-6 flex items-center gap-2 text-xs text-muted transition hover:text-bright">
           <span className="size-1.5 animate-pulse rounded-full bg-moss" /> available immediately · open to relocate
         </a>
@@ -175,19 +175,26 @@ export default function Home() {
                     <p className="font-medium text-bright">{e.role}</p>
                     <p className="text-sm text-muted">{e.org} · {e.when}</p>
                     {"points" in e && e.points && (
-                      <ul className="mt-4 space-y-4">
-                        {e.points.map((pt) => (
-                          <li key={pt.name} className="border-l-2 border-line pl-4">
-                            <p className="text-bright">
-                              {pt.name} <span className="text-sm text-muted">· {pt.when}</span>
-                              {"href" in pt && pt.href && (
-                                <a href={pt.href} target="_blank" rel="noreferrer" className="term-link ml-2 text-sm">code</a>
-                              )}
-                            </p>
-                            <p className="mt-1 text-sm text-muted">{pt.text}</p>
-                          </li>
-                        ))}
-                      </ul>
+                      // Collapsed by default; native <details>, so it works without JS
+                      <details className="dropdown group mt-3">
+                        <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-sm text-fg transition hover:border-dim hover:text-bright [&::-webkit-details-marker]:hidden">
+                          {e.points.length} client projects
+                          <LuChevronDown className="size-4 transition-transform duration-300 group-open:rotate-180" aria-hidden />
+                        </summary>
+                        <ul className="mt-4 space-y-4">
+                          {e.points.map((pt) => (
+                            <li key={pt.name} className="border-l-2 border-line pl-4">
+                              <p className="text-bright">
+                                {pt.name} <span className="text-sm text-muted">· {pt.when}</span>
+                                {"href" in pt && pt.href && (
+                                  <a href={pt.href} target="_blank" rel="noreferrer" className="term-link ml-2 text-sm">code</a>
+                                )}
+                              </p>
+                              <p className="mt-1 text-sm text-muted">{pt.text}</p>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
                     )}
                   </div>
                 </li>

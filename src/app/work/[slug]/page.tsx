@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  LuArrowLeft, LuChartBar, LuCircleAlert, LuExternalLink, LuGithub, LuLayers, LuListTodo, LuScale, LuTarget, LuZap,
+  LuArrowLeft, LuChartBar, LuCircleAlert, LuExternalLink, LuGauge, LuGithub, LuLayers, LuListTodo, LuScale, LuTarget, LuZap,
 } from "react-icons/lu";
 import { notFound } from "next/navigation";
 import { AnatomyFrame } from "@/components/anatomy-frame";
@@ -32,7 +32,7 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
 
   return (
     <article className="py-10">
-      <Link href="/#work" className="term-btn"><LuArrowLeft aria-hidden /> back</Link>
+      <Link href="/#work" className="term-btn gap-2 px-5 py-2.5 text-base"><LuArrowLeft className="size-5" aria-hidden /> back</Link>
 
       {/* 30-second block */}
       <header className="mt-8">
@@ -159,6 +159,25 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
           ))}
         </div>
       </section>
+
+      {project.loadTests && (
+        <section className="mt-14">
+          <SectionTitle icon={LuGauge}>Load tests</SectionTitle>
+          <p className="mb-5 max-w-3xl text-muted">{project.loadTests.caption}</p>
+          <div className="card overflow-hidden">
+            <div className="hidden grid-cols-[1fr_1.4fr_2fr] gap-6 border-b border-line bg-surface px-4 py-2 text-xs uppercase text-dim sm:grid">
+              <span>test</span><span>load</span><span>result</span>
+            </div>
+            {project.loadTests.rows.map((r) => (
+              <div key={r.test + r.load} className="grid gap-1 border-b border-line px-4 py-3 last:border-b-0 sm:grid-cols-[1fr_1.4fr_2fr] sm:gap-6">
+                <p className="text-bright">{r.test}</p>
+                <p className="text-muted">{r.load}</p>
+                <p className="text-fg">{r.result}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mt-14">
         <SectionTitle icon={LuListTodo}>Next</SectionTitle>

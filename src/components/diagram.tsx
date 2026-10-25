@@ -30,7 +30,7 @@ export const kinds: Record<NodeKind, { icon: IconType; tag: string; tone: Tone }
 /** A titled frame, like a terminal pane. */
 export function Figure({ title, caption, index, children }: { title: string; caption?: string; index?: number; children: React.ReactNode }) {
   return (
-    <figure className="card overflow-hidden">
+    <figure className="card mx-auto max-w-5xl overflow-hidden">
       <figcaption className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-4 py-2.5">
         <span className="font-medium text-bright">
           {index !== undefined && <span className="text-navy">fig.{index + 1} </span>}

@@ -25,7 +25,7 @@ export function AnatomyFrame({ src, title }: { src: string; title: string }) {
       title={title}
       loading="lazy"
       style={{ height }}
-      className="block w-full border-0 bg-transparent"
+      className="mx-auto block w-full max-w-5xl border-0 bg-transparent"
     />
   );
 }

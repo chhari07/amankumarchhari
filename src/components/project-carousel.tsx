@@ -10,8 +10,11 @@ import { site } from "@/content/site";
 // Work section: a coverflow of project banners. The front card is the active project;
 // its neighbours peek out behind it, tilted. On first view the stack starts grey and
 // folded, then colours in and fans out; after that it advances every few seconds.
+// Drag with the mouse or swipe on touch to move between projects.
 
 const ADVANCE_MS = 3800;
+const SWIPE_PX = 50; // horizontal distance that counts as a swipe
+const DRAG_PX = 8; // movement past this is a drag, so the card link doesn't open
 
 // Where a card sits relative to the active one: 0 front, ±1 neighbours, 2 hidden behind.
 function place(offset: number, open: boolean) {
@@ -53,6 +56,29 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
 
   const go = (d: number) => setActive((a) => (a + d + n) % n);
 
+  const dragStart = useRef<number | null>(null);
+  const dragged = useRef(false);
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragStart.current = e.clientX;
+    dragged.current = false;
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (dragStart.current !== null && Math.abs(e.clientX - dragStart.current) > DRAG_PX) dragged.current = true;
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (dragStart.current === null) return;
+    const dx = e.clientX - dragStart.current;
+    dragStart.current = null;
+    if (Math.abs(dx) > SWIPE_PX) go(dx < 0 ? 1 : -1);
+  };
+  // A drag ends with a click on the card under the pointer; swallow it.
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (!dragged.current) return;
+    e.preventDefault();
+    e.stopPropagation();
+    dragged.current = false;
+  };
+
   return (
     <div
       ref={root}
@@ -63,9 +89,15 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
       className="flex flex-col items-center overflow-x-clip py-6"
     >
       <div
-        className="relative w-full [perspective:1400px] [--card:min(620px,80vw)] [--peek:min(390px,32vw)]"
+        className="relative w-full cursor-grab touch-pan-y select-none active:cursor-grabbing [perspective:1400px] [--card:min(620px,80vw)] [--peek:min(390px,32vw)]"
         style={{ height: "calc(var(--card) * 0.5625)" }}
         aria-roledescription="carousel"
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={() => (dragStart.current = null)}
+        onDragStart={(e) => e.preventDefault()} // links and images are natively draggable, which cancels the pointer stream
+        onClickCapture={onClickCapture}
       >
         {list.map((p, i) => {
           let offset = (i - active + n) % n;
@@ -91,6 +123,7 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
                     width={1600}
                     height={900}
                     sizes="620px"
+                    draggable={false}
                     className={`w-full transition duration-[1200ms] ${open ? "grayscale-0" : "grayscale"}`}
                   />
                   <span className="absolute right-4 top-4 grid size-9 place-items-center rounded-full bg-black/25 text-white opacity-0 backdrop-blur-md transition group-hover:opacity-100">
@@ -104,7 +137,7 @@ export function ProjectCarousel({ projects }: { projects: Project[] }) {
                   onClick={() => go(offset)}
                   className="block w-full overflow-hidden rounded-[1.6rem] shadow-[0_18px_40px_-20px_rgb(30_40_90/0.45)] ring-1 ring-black/5"
                 >
-                  <Image src={p.card!} alt="" width={1600} height={900} sizes="500px" className="w-full brightness-[0.92]" />
+                  <Image src={p.card!} alt="" width={1600} height={900} sizes="500px" draggable={false} className="w-full brightness-[0.92]" />
                 </button>
               )}
             </div>

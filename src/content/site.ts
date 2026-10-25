@@ -5,9 +5,9 @@ export const site = {
   location: "Guna, Madhya Pradesh · open to relocate",
   tagline: "I ship AI features inside real products, with the guardrails that make them safe to run.",
   intro:
-    "One gateway for every model call, spend caps, tool use, human approval and eval cases. I build end to end, from system design to deployment.",
+    "One gateway for every model call, spend caps, tool use, human approval and eval cases, load-tested with Apache JMeter. I build end to end, from system design to deployment.",
   about:
-    "Applied AI engineer who ships AI features inside real products, with guardrails built in. I work alone and build end to end: system design, typed backend, UI, payments and deployment. Freelance since 2023; B.Tech CSE 2026.",
+    "Applied AI engineer who ships AI features inside real products, with guardrails in place and JMeter load tests that show they hold under real concurrency. I work alone and build end to end: system design, typed backend, UI, payments and deployment. Freelance since 2023; B.Tech CSE 2026.",
   // "What I'm looking for" section: keep in sync with the resume
   jobSearch: {
     roles: ["Applied AI engineer", "Full-stack engineer", "Software engineer (SDE-1)"],
@@ -27,7 +27,7 @@ export const site = {
       { title: "Guardrails first", text: "Every model call passes one gateway with auth, rate limits, a kill switch and a daily spend cap." },
       { title: "AI drafts, people decide", text: "The model proposes stock imports, replies and restock ideas. Nothing is saved until the owner approves it." },
       { title: "Checked output", text: "Responses are validated against a Zod schema. Malformed output fails closed: the user sees an error and nothing is saved." },
-      { title: "Measured, not guessed", text: "Eval cases cover misspellings, Hindi aliases and gibberish input, so prompt and model changes can be tested before they ship." },
+      { title: "Measured, not guessed", text: "Eval cases cover misspellings, Hindi aliases and gibberish input, and JMeter load tests check the guardrails under concurrency: 50 buyers racing for the last 5 units still make exactly 5 orders." },
     ],
   },
   education: {
@@ -85,6 +85,6 @@ export const site = {
     Frontend: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
     Backend: ["Node.js", "Express", "FastAPI", "Python", "Supabase Postgres", "Clerk", "Razorpay"],
     "Applied AI": ["Generative AI", "Claude API", "OpenAI API", "Agentic workflows", "Multi-agent (Fetch.ai uAgents)", "Tool use", "Prompt engineering", "Structured outputs (Zod)", "Guardrails", "Human-in-the-loop", "LLM evals", "LLM observability"],
-    Infra: ["Vercel", "Netlify", "GitHub Actions", "Linux"],
+    "Infra & Testing": ["Vercel", "Netlify", "GitHub Actions", "Linux", "Apache JMeter (load, race & failover tests)", "Vitest"],
   },
 };
