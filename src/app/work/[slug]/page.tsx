@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  LuArrowLeft, LuChartBar, LuCircleAlert, LuExternalLink, LuGauge, LuGithub, LuLayers, LuListTodo, LuScale, LuTarget, LuZap,
+  LuArrowLeft, LuChartBar, LuCircleAlert, LuExternalLink, LuGauge, LuGithub, LuLayers, LuListTodo, LuScale, LuTarget, LuWorkflow, LuZap,
 } from "react-icons/lu";
+import { getWalkthrough } from "@/content/how-it-works";
 import { notFound } from "next/navigation";
 import { AnatomyFrame } from "@/components/anatomy-frame";
 import { CaseTabs } from "@/components/case-tabs";
@@ -43,15 +44,16 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
         <div className="mt-4 flex flex-wrap gap-1.5">
           {project.stack.map((s) => <Tag key={s}>{s}</Tag>)}
         </div>
-        {project.links.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.links.map((l, i) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className={`term-btn ${i === 0 ? "term-btn-solid" : ""}`}>
-                {/github/i.test(l.label) ? <LuGithub aria-hidden /> : <LuExternalLink aria-hidden />} {l.label.toLowerCase()}
-              </a>
-            ))}
-          </div>
-        )}
+        <div className="mt-6 flex flex-wrap gap-2">
+          {getWalkthrough(project.slug) && (
+            <Link href={`/work/${project.slug}/how-it-works`} className="term-btn term-btn-solid"><LuWorkflow aria-hidden /> how it works</Link>
+          )}
+          {project.links.map((l) => (
+            <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="term-btn">
+              {/github/i.test(l.label) ? <LuGithub aria-hidden /> : <LuExternalLink aria-hidden />} {l.label.toLowerCase()}
+            </a>
+          ))}
+        </div>
       </header>
 
       {project.banner ? (
