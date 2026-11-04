@@ -170,7 +170,7 @@ export const kits: Kit[] = [
       "Sticky notes, optional Desktop Stack pile and GitHub widget",
       "Backup on install; the uninstaller restores your old settings",
     ],
-    images: [{ src: "/kits/mac-kit-poster.webp", alt: "Ubuntu desktop after installing Ubuntu Mac Kit" }],
+    images: [{ src: "/kits/mac-kit-desktop.webp", alt: "Drawing of a macOS-style Ubuntu desktop: glass top bar, Finder-style window, blue folders, dock" }],
     video: "/videos/ubuntu-mac-kit-brand.mp4",
     links: [
       { label: "GitHub", href: "https://github.com/chhari07/ubuntu-mac-kit" },
