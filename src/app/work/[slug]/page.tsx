@@ -1,17 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  LuArrowLeft, LuChartBar, LuCircleAlert, LuExternalLink, LuGauge, LuGithub, LuLayers, LuListTodo, LuScale, LuTarget, LuWorkflow, LuZap,
-} from "react-icons/lu";
-import { getWalkthrough } from "@/content/how-it-works";
 import { notFound } from "next/navigation";
-import { AnatomyFrame } from "@/components/anatomy-frame";
-import { CaseTabs } from "@/components/case-tabs";
-import { DecisionDiagram, Diagram, FailureDiagram, Figure } from "@/components/diagram";
-import { SystemDiagram } from "@/components/system-diagram";
-import { Pill, SectionTitle, Tag } from "@/components/ui";
-import { getProject, projects } from "@/content/projects";
+import { AppIcon, MenuBar, Footer, Rise } from "@/components/chrome";
+import { getProject, projects } from "@/content/portfolio";
+import { getDeep } from "@/content/fullstack";
 
 export const dynamicParams = false;
 
@@ -20,175 +13,165 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata(props: PageProps<"/work/[slug]">): Promise<Metadata> {
-  const project = getProject((await props.params).slug);
-  return project ? { title: project.name, description: project.tagline } : {};
+  const p = getProject((await props.params).slug);
+  return p ? { title: p.name, description: p.tagline } : {};
 }
 
-const isTodo = (v: string) => v.startsWith("TODO");
-
 export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
-  const project = getProject((await props.params).slug);
-  if (!project) notFound();
-  const diagramCount = project.diagrams.length + 3 + (project.userFlow ? 1 : 0) + (project.anatomy ? 1 : 0); // + system design, decisions, failure paths, figures
+  const p = getProject((await props.params).slug);
+  if (!p) notFound();
+  const i = projects.indexOf(p);
+  const next = projects[(i + 1) % projects.length];
+  const deep = getDeep(p.slug);
 
   return (
-    <article className="py-10">
-      <Link href="/#work" className="term-btn gap-2 px-5 py-2.5 text-base"><LuArrowLeft className="size-5" aria-hidden /> back</Link>
+    <>
+      <MenuBar />
+      <main style={{ "--accent": p.color } as React.CSSProperties} className="case">
+        <header className="cs-hero">
+          <p className="label mute">
+            Case study {String(i + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+          </p>
+          <div className="tool-title">
+            <AppIcon src={p.logo} size={140} alt={`${p.name} icon`} />
+            <h1 className="display" aria-label={p.name}>
+              <Rise text={p.name} />
+            </h1>
+          </div>
+          <p className="tag fade">{p.tagline}</p>
+          <div className="cs-meta label">
+            <div>
+              <span>Type</span>
+              {p.kind}
+            </div>
+            <div>
+              <span>Role</span>
+              {p.role}
+            </div>
+            <div>
+              <span>Year</span>
+              {p.year}
+            </div>
+            <div>
+              <span>Stack</span>
+              {p.stack}
+            </div>
+          </div>
+        </header>
 
-      {/* 30-second block */}
-      <header className="mt-8">
-        <Pill label={`work · ${project.slug}`} center={false} />
-        <h1 className="display ink mt-6 pb-1 text-5xl sm:text-7xl">{project.name}</h1>
-        <p className="mt-3 text-lg">{project.tagline}</p>
-        <p className="mt-1 text-muted">{project.role} · {project.year}</p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {project.stack.map((s) => <Tag key={s}>{s}</Tag>)}
+        <div className="cs-media">
+          {p.poster ? <img src={p.poster} alt={`${p.name} launch poster`} /> : <img src={p.banner} alt={`${p.name} banner`} />}
+          <div className="stackv">
+            {p.video ? (
+              <video src={p.video} poster={p.video.replace(".mp4", ".jpg")} controls playsInline preload="none" />
+            ) : null}
+            {p.poster ? <img src={p.banner} alt={`${p.name} case-study banner`} /> : null}
+            {p.shot ? <img src={p.shot} alt={`${p.name} product screen`} loading="lazy" /> : null}
+          </div>
         </div>
-        <div className="mt-6 flex flex-wrap gap-2">
-          {getWalkthrough(project.slug) && (
-            <Link href={`/work/${project.slug}/how-it-works`} className="term-btn term-btn-solid"><LuWorkflow aria-hidden /> how it works</Link>
-          )}
-          {project.links.map((l) => (
-            <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="term-btn">
-              {/github/i.test(l.label) ? <LuGithub aria-hidden /> : <LuExternalLink aria-hidden />} {l.label.toLowerCase()}
-            </a>
-          ))}
-        </div>
-      </header>
 
-      {project.banner ? (
-        <figure className="mt-10 overflow-hidden rounded-2xl sm:rounded-[1.75rem] shadow-[0_18px_40px_-18px_rgb(30_40_90/0.45)] ring-1 ring-black/5">
-          <Image src={project.banner} alt={`${project.name}: ${project.tagline}`} width={1584} height={396} priority className="w-full" />
-        </figure>
-      ) : project.cover && (
-        <figure className="card group mt-10 overflow-hidden">
-          <Image src={project.cover} alt={`${project.name} screenshot`} width={1600} height={900} priority className="w-full grayscale-[60%] transition duration-300 group-hover:grayscale-0" />
-        </figure>
-      )}
-
-      <section className="mt-12 grid gap-10 md:grid-cols-2">
-        <div>
-          <SectionTitle icon={LuTarget}>Problem</SectionTitle>
-          <p>{project.problem}</p>
+        <div className="cs-body">
+          <h2 className="display">The problem</h2>
+          <p>{p.problem}</p>
         </div>
-        <div>
-          <SectionTitle icon={LuZap}>In short</SectionTitle>
-          <ul className="space-y-1.5">
-            {project.highlights.map((h) => (
-              <li key={h} className="flex gap-2"><span className="text-dim">-</span><span>{h}</span></li>
+        <div className="cs-body">
+          <h2 className="display">What I built</h2>
+          <ul>
+            {p.built.map((b) => (
+              <li key={b}>{b}</li>
             ))}
           </ul>
         </div>
-      </section>
+        <div className="cs-body">
+          <h2 className="display">The brand story</h2>
+          <p>{p.story}</p>
+        </div>
 
-      {/* Deep section: written or diagram view */}
-      <div className="mt-14">
-        <CaseTabs
-          count={diagramCount}
-          text={
-            <>
-          <section className="mt-8">
-            <SectionTitle icon={LuLayers}>Architecture</SectionTitle>
-            <p className="mb-5 max-w-3xl text-muted">{project.architecture.summary}</p>
-            <div className="mb-6">
-              <Figure title="System design" caption={project.system.caption}>
-                <SystemDiagram design={project.system} id={`${project.slug}-text`} />
-              </Figure>
-            </div>
-            <ol className="card overflow-hidden">
-              {project.architecture.flow.map((step, i) => (
-                <li key={step} className="flex gap-4 border-b border-line px-4 py-2 last:border-b-0">
-                  <span className="text-navy">{String(i + 1).padStart(2, "0")}</span>
-                  <span>{step}</span>
-                </li>
-              ))}
-            </ol>
-          </section>
-
-          <section className="mt-14">
-            <SectionTitle icon={LuScale}>Decisions</SectionTitle>
-            <div className="space-y-4">
-              {project.decisions.map((d) => (
-                <pre key={d.chose} className="card whitespace-pre-wrap p-4 font-mono text-[13px]">
-                  <span className="block text-bright"><span className="text-moss">+</span> {d.chose}</span>
-                  <span className="block text-dim line-through decoration-rust/60"><span className="text-rust">-</span> {d.rejected}</span>
-                  <span className="mt-2 block text-muted">  {d.why}</span>
-                </pre>
-              ))}
-            </div>
-          </section>
-
-          <section className="mt-14">
-            <SectionTitle icon={LuCircleAlert}>Failure handling</SectionTitle>
-            <div className="card overflow-hidden">
-              <div className="hidden grid-cols-2 gap-6 border-b border-line bg-surface px-4 py-2 text-xs uppercase text-dim sm:grid">
-                <span>failure</span><span>handling</span>
-              </div>
-              {project.failures.map((f) => (
-                <div key={f.what} className="grid gap-1 border-b border-line px-4 py-3 last:border-b-0 sm:grid-cols-2 sm:gap-6">
-                  <p className="text-bright">{f.what}</p>
-                  <p className={isTodo(f.handling) ? "text-dim italic" : "text-muted"}>{f.handling}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-            </>
-          }
-          diagrams={
-            <div className="space-y-6 pt-8">
-              {project.userFlow && <AnatomyFrame src={project.userFlow.src} title={project.userFlow.title} />}
-              {project.anatomy && <AnatomyFrame src={project.anatomy.src} title={project.anatomy.title} />}
-              <Figure title="System design" caption={project.system.caption} index={0}>
-                <SystemDiagram design={project.system} id={`${project.slug}-diagrams`} />
-              </Figure>
-              {project.diagrams.map((d, i) => <Diagram key={d.title} diagram={d} index={i + 1} />)}
-              <DecisionDiagram decisions={project.decisions} index={project.diagrams.length + 1} />
-              <FailureDiagram failures={project.failures} index={project.diagrams.length + 2} />
-            </div>
-          }
-        />
-      </div>
-
-      <section className="mt-14">
-        <SectionTitle icon={LuChartBar}>Numbers</SectionTitle>
-        <div className={`card grid grid-cols-2 gap-px overflow-hidden bg-line ${["md:grid-cols-1", "md:grid-cols-2", "md:grid-cols-3", "md:grid-cols-4"][Math.min(project.metrics.length, 4) - 1]} ${project.metrics.length === 1 ? "grid-cols-1" : ""}`}>
-          {project.metrics.map((m) => (
-            <div key={m.label} className="bg-surface2 p-4">
-              <p className={`text-3xl font-light ${isTodo(m.value) ? "text-dim" : "text-bright"}`}>{m.value}</p>
-              <p className="mt-1 text-xs text-muted">{m.label}</p>
-              {m.note && <p className="text-xs text-dim">{m.note}</p>}
+        <div className="cs-nums">
+          {p.numbers.map((n) => (
+            <div key={n.l}>
+              <b className="display">{n.v}</b>
+              <span>{n.l}</span>
             </div>
           ))}
         </div>
-      </section>
 
-      {project.loadTests && (
-        <section className="mt-14">
-          <SectionTitle icon={LuGauge}>Load tests</SectionTitle>
-          <p className="mb-5 max-w-3xl text-muted">{project.loadTests.caption}</p>
-          <div className="card overflow-hidden">
-            <div className="hidden grid-cols-[1fr_1.4fr_2fr] gap-6 border-b border-line bg-surface px-4 py-2 text-xs uppercase text-dim sm:grid">
-              <span>test</span><span>load</span><span>result</span>
-            </div>
-            {project.loadTests.rows.map((r) => (
-              <div key={r.test + r.load} className="grid gap-1 border-b border-line px-4 py-3 last:border-b-0 sm:grid-cols-[1fr_1.4fr_2fr] sm:gap-6">
-                <p className="text-bright">{r.test}</p>
-                <p className="text-muted">{r.load}</p>
-                <p className="text-fg">{r.result}</p>
+        {deep ? (
+          <>
+            <div className="cs-body">
+              <h2 className="display">Decisions</h2>
+              <div className="decisions">
+                {deep.decisions.map((d) => (
+                  <div key={d.chose}>
+                    <span className="label chose">Chose</span>
+                    <h3>{d.chose}</h3>
+                    <span className="label rejected">Rejected</span>
+                    <p className="mute">{d.rejected}</p>
+                    <p>{d.why}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            </div>
+            <div className="cs-body">
+              <h2 className="display">When it fails</h2>
+              <ul className="fails">
+                {deep.failures.map((f) => (
+                  <li key={f.what}>
+                    <b>{f.what}</b>
+                    <span>{f.handling}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {deep.loadTests ? (
+              <div className="cs-tests pad">
+                <h2 className="display">Load-tested with JMeter</h2>
+                <p className="mute">{deep.loadTests.caption}</p>
+                <div className="table-wrap">
+                  <table>
+                    <thead>
+                      <tr className="label mute">
+                        <th>Test</th>
+                        <th>Load</th>
+                        <th>Result</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {deep.loadTests.rows.map((r) => (
+                        <tr key={r.test + r.load}>
+                          <td>
+                            <b>{r.test}</b>
+                          </td>
+                          <td>{r.load}</td>
+                          <td>
+                            <i className="ok" />
+                            {r.result}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : null}
+          </>
+        ) : null}
 
-      <section className="mt-14">
-        <SectionTitle icon={LuListTodo}>Next</SectionTitle>
-        <ul className="space-y-1">
-          {project.next.map((n) => (
-            <li key={n} className="flex gap-2"><span className="text-dim">○</span> {n}</li>
+        {p.note ? <p className="note">{p.note}</p> : null}
+        <div className="cs-links">
+          {p.links.map((l) => (
+            <a key={l.href} className="pill" href={l.href} target="_blank" rel="noopener">
+              {l.label} ↗
+            </a>
           ))}
-        </ul>
-      </section>
-    </article>
+        </div>
+
+        <Link href={`/work/${next.slug}`} className="next" style={{ "--c": next.color } as React.CSSProperties}>
+          <span className="label mute">Next case study 👉</span>
+          <span className="display">{next.name}</span>
+        </Link>
+      </main>
+      <Footer />
+    </>
   );
 }

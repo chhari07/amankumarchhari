@@ -1,32 +1,20 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
-import { Nav } from "@/components/nav";
-import { Footer } from "@/components/footer";
-import { site } from "@/content/site";
+import { Anton, Inter } from "next/font/google";
 import "./globals.css";
 
-// Inter with optical sizing: the closest open look-alike to the macOS system font
-const sans = Inter({ variable: "--font-inter", subsets: ["latin"], axes: ["opsz"] });
-const mono = JetBrains_Mono({ variable: "--font-jetbrains", subsets: ["latin"], weight: ["400", "700"] });
+// Anton: free condensed display face, the open look-alike of the paid Oblisk typeface in the reference.
+const anton = Anton({ variable: "--font-anton", subsets: ["latin"], weight: "400" });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(site.url),
-  title: { default: `${site.name} · ${site.role}`, template: `%s · ${site.name}` },
-  description: site.tagline,
-  openGraph: { title: `${site.name} · ${site.role}`, description: site.tagline, type: "website" },
-  twitter: { card: "summary_large_image", title: `${site.name} · ${site.role}`, description: site.tagline },
+  title: { default: "Aman Kumar Chhari · Design Engineer & Applied AI", template: "%s · Aman Kumar Chhari" },
+  description: "Design Engineer and applied AI engineer: AI products built end to end with guardrails, then told as a brand story. Selected works 2026.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} h-full antialiased`}>
-      <body className="min-h-full font-sans">
-        <Nav />
-        <div className="flex min-h-[calc(100vh-4rem)] w-full flex-col px-4 sm:px-8 lg:px-14 2xl:px-20">
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
-      </body>
+    <html lang="en" className={`${anton.variable} ${inter.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

@@ -1,302 +1,299 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import type { IconType } from "react-icons";
-import { LuBriefcase, LuFileText, LuGithub, LuGauge, LuLayers, LuLinkedin, LuMail, LuShieldCheck, LuTrophy, LuUserCheck, LuFileCheck, LuDownload, LuArrowUpRight, LuChevronDown } from "react-icons/lu";
-import { SiClaude, SiNextdotjs, SiNodedotjs, SiPostgresql, SiReact, SiTypescript } from "react-icons/si";
-import { ProjectCarousel } from "@/components/project-carousel";
-import { Block } from "@/components/ui";
-import { projects } from "@/content/projects";
-import { site } from "@/content/site";
+import { AppIcon, Dot, Footer, Letters, MenuBar, Rise } from "@/components/chrome";
+import { Ill, roleIcons, stepIcons } from "@/components/illustrations";
+import { WorkIndex } from "@/components/work-index";
+import { awards, dock, education, experience, guards, hero, pick, principles, projects, proof, roleText, site } from "@/content/portfolio";
+import { kits, tools } from "@/content/tools";
 
-const stackIcons: Record<string, IconType> = {
-  "Next.js": SiNextdotjs,
-  React: SiReact,
-  TypeScript: SiTypescript,
-  "Node.js": SiNodedotjs,
-  Postgres: SiPostgresql,
-  "Claude API": SiClaude,
-};
-
-type DockItem = { label: string; icon: IconType; bg: string; fg: string; href?: string };
-const dockTools: DockItem[] = site.stack.map((t) => ({ label: t.name, icon: stackIcons[t.name] ?? LuLayers, bg: t.bg, fg: t.fg }));
-const dockLinks: DockItem[] = [
-  { label: "Resume", icon: LuFileText, bg: "#f2c94c", fg: "#1a1a1a", href: site.links.resume },
-  { label: "GitHub", icon: LuGithub, bg: "#24292f", fg: "#ffffff", href: site.links.github },
-  { label: "LinkedIn", icon: LuLinkedin, bg: "#2d6fb8", fg: "#ffffff", href: site.links.linkedin },
-  { label: "Email", icon: LuMail, bg: "linear-gradient(180deg,#5aa9ff,#2f6fde)", fg: "#ffffff", href: `mailto:${site.email}` },
-];
-
-// "Applied AI Engineer (Full-Stack)" → headline "Applied AI Engineer" + "& full-stack"
-const [roleMain, roleSub = ""] = site.role.split(" (");
-const wins = site.achievements.filter((a) => a.text.startsWith("Winner"));
-const finals = site.achievements.filter((a) => /finalist/i.test(a.text));
-const glance = [
-  { label: "Based in", value: site.location.split("·")[0].trim() },
-  { label: "Location", value: "Open to relocate" },
-  { label: "Start", value: "Immediately" },
-  { label: "Education", value: `B.Tech CSE, ${site.education.years.split("–")[1].trim()}` },
-];
-
-function DockIcon({ item }: { item: DockItem }) {
-  const Icon = item.icon;
-  const tile = (
-    <span
-      className="grid size-[min(30px,6.4vw)] place-items-center rounded-[min(8px,1.8vw)] sm:rounded-[12px] shadow-[inset_0_0_0_1px_rgb(0_0_0/0.06),0_2px_4px_rgb(0_0_0/0.08)] transition duration-200 group-hover:-translate-y-2 group-hover:scale-115 sm:size-12"
-      style={{ background: item.bg, color: item.fg }}
-    >
-      <Icon className="size-[55%] sm:size-6" aria-hidden />
-    </span>
-  );
-  return (
-    <li className="group relative">
-      <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-bright px-2 py-0.5 text-[11px] text-surface2 opacity-0 transition group-hover:opacity-100">
-        {item.label}
-      </span>
-      {item.href ? <a href={item.href} aria-label={item.label}>{tile}</a> : <span aria-label={item.label}>{tile}</span>}
-    </li>
-  );
-}
-
-const ext = (href: string, label: string) => <a href={href} target="_blank" rel="noreferrer" className="term-link">{label}</a>;
+const css = (v: Record<string, string>) => v as React.CSSProperties;
 
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="flex flex-col items-center pt-24 text-center sm:pt-32">
-        <Image
-          src={site.avatar}
-          alt={site.name}
-          width={176}
-          height={176}
-          priority
-          className="size-32 rounded-full object-cover shadow-[0_0_0_1px_rgb(0_0_0/0.06),0_10px_28px_-10px_rgb(0_0_0/0.3)] sm:size-44"
-        />
-        <p className="mt-4 text-sm font-medium text-fg">{site.name}</p>
-        <h1 className="display ink mt-6 pb-1 text-[2.6rem] sm:text-7xl lg:text-8xl">
-          {roleMain} <LuLayers className="inline size-[0.8em] -translate-y-[0.06em] stroke-[1.6] text-[#2c2c2e]" aria-hidden />
-          <br />
-          &amp; {roleSub.replace(")", "").toLowerCase()}
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg text-muted lg:max-w-none lg:whitespace-nowrap">{site.tagline}</p>
-        <a href="#hiring" className="mt-6 flex items-center gap-2 text-xs text-muted transition hover:text-bright">
-          <span className="size-1.5 animate-pulse rounded-full bg-moss" /> available immediately · open to relocate
-        </a>
-
-        <ul className="card mt-20 flex max-w-full items-end gap-[min(6px,1vw)] rounded-[min(16px,3.5vw)] bg-surface2/70 p-[min(8px,1.6vw)] backdrop-blur sm:mt-28 sm:gap-2.5 sm:rounded-[22px] sm:px-3 sm:py-2.5">
-          {dockTools.map((d) => <DockIcon key={d.label} item={d} />)}
-          <li aria-hidden className="mx-px h-[min(28px,6vw)] w-px self-center bg-line sm:mx-1 sm:h-10" />
-          {dockLinks.map((d) => <DockIcon key={d.label} item={d} />)}
-        </ul>
-      </section>
-
-      {/* About */}
-      <Block id="about" label="about" title="Hi there." className="mt-12">
-        <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-          <div className="card space-y-5 p-6 text-fg sm:p-8 lg:text-[17px]">
-            <p>{site.about}</p>
-            <p>
-              Recent work:{" "}
-              {projects.map((p, i) => (
-                <span key={p.slug}>
-                  <Link href={`/work/${p.slug}`} className="term-link">{p.name}</Link>
-                  {i < projects.length - 2 ? ", " : i === projects.length - 2 ? " and " : ""}
-                </span>
-              ))}
-              .
-            </p>
-            <p>
-              Hackathon winner ({wins.map((w) => w.text.replace("Winner, ", "")).join(", ")}), with national-level finishes at{" "}
-              {finals.map((f) => f.text.split(", ")[1]).join(", ").replace(/, ([^,]*)$/, " and $1")}. Every entry solo.
-            </p>
-            <p>{site.education.degree}, {site.education.school} ({site.education.years}).</p>
-            <p className="flex flex-wrap gap-x-2 text-muted">
-              {ext(site.links.github, "GitHub")}<span>·</span>{ext(site.links.resume, "Résumé")}<span>·</span>
-              <a href={`mailto:${site.email}`} className="term-link">{site.email}</a>
-            </p>
+      <MenuBar />
+      <main>
+        {/* Hero: giant SOLOX, cut-out portrait in front, one line + two CTAs. */}
+        <header className="hero">
+          <div className="hero-top label">
+            <span>
+              <Dot i={0} />
+              {site.year} · Selected works
+            </span>
+            <span>{site.title}</span>
           </div>
-          <dl className="card grid grid-cols-2 content-start gap-x-6 gap-y-6 p-6 sm:p-8">
-            {glance.map((g) => (
-              <div key={g.label}>
-                <dt className="text-xs uppercase tracking-wider text-dim">{g.label}</dt>
-                <dd className="mt-1 font-medium text-bright">{g.value}</dd>
+          <div>
+            <div className="stage">
+              <h1 className="display" aria-label={`${hero.word}, ${site.name}`}>
+                <Rise text={hero.word} />
+              </h1>
+              <img className="me fade" src="/solox-cutout.webp" alt={`Illustrated portrait of ${site.name}`} width={900} height={1180} />
+            </div>
+          </div>
+          <div className="hero-foot fade">
+            <p className="sub">{site.line}</p>
+            <div className="cta">
+              <a className="pill dark" href="#work">
+                See the work
+              </a>
+              <Link className="pill" href="/contact">
+                Get in touch
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        {/* (01) What I do */}
+        <section id="what" className="pad">
+          <div className="sechead label">
+            <span>(01) What I do</span>
+            <span className="mute">Problem → launch</span>
+          </div>
+          <h2 className="statement display">
+            One person, from the client&apos;s problem <em>to the launch poster.</em>
+          </h2>
+          <p className="intro">{site.intro}</p>
+          <div className="steps">
+            {site.steps.map((s, i) => (
+              <div key={s.k} style={css({ "--c": pick(i) })}>
+                <Ill name={stepIcons[i]} />
+                <b>{s.k}</b>
+                <h3>{s.t}</h3>
+                <p>{s.d}</p>
               </div>
             ))}
-            <div className="col-span-2 border-t border-line pt-6">
-              <dt className="text-xs uppercase tracking-wider text-dim">Looking for</dt>
-              <dd className="mt-2 flex flex-wrap gap-2">
-                {site.jobSearch.roles.map((r) => (
-                  <span key={r} className="rounded-full bg-bright px-3 py-1 text-sm text-surface2">{r}</span>
-                ))}
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </Block>
+          </div>
+        </section>
 
-      {/* Applied AI */}
-      <Block id="applied-ai" label="applied ai" title="What is applied AI?">
-        <div className="grid gap-x-12 gap-y-8 lg:grid-cols-2">
-          <p className="text-fg lg:text-[17px]">{site.appliedAi.what}</p>
+        {/* (02) Work */}
+        <section id="work" className="pad">
+          <div className="sechead label">
+            <span>(02) Selected work</span>
+            <span className="mute">{String(projects.length).padStart(2, "0")} case studies</span>
+          </div>
+          <WorkIndex projects={projects} />
+        </section>
+
+        {/* (03) Proof */}
+        <section className="pad" style={{ paddingTop: 0 }}>
+          <div className="sechead label">
+            <span>(03) Measured, not estimated</span>
+            <span className="mute">JMeter · evals · results</span>
+          </div>
+          <div className="proof">
+            {proof.map((p, i) => (
+              <div key={p.v} style={css({ "--c": pick(i) })}>
+                <Dot i={i} />
+                <b className="display">{p.v}</b>
+                <span>{p.l}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* (04) How I build AI, from the full-stack site */}
+        <section id="ai" className="pad" style={{ paddingTop: 0 }}>
+          <div className="sechead label">
+            <span>(04) How I build AI</span>
+            <span className="mute">Applied AI</span>
+          </div>
+          <h2 className="ai-head display">A model demo takes an afternoon. Making it safe for real users, real data and real money is the job.</h2>
+          <div className="guards">
+            {guards.map((g, i) => (
+              <div key={g.t} style={css({ "--c": pick(i) })}>
+                <Dot i={i} />
+                <h3>{g.t}</h3>
+                <p>{g.d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        <div className="ticker" aria-label={principles.join(" ")}>
           <div>
-            <h3 className="text-2xl font-semibold tracking-tight text-bright">Why an applied AI engineer?</h3>
-            <p className="mt-3 text-fg lg:text-[17px]">{site.appliedAi.whyIntro}</p>
+            {[...principles, ...principles, ...principles].map((p, i) => (
+              <span key={i} className="display">
+                {p} <b>✳</b>
+              </span>
+            ))}
           </div>
         </div>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {site.appliedAi.why.map((w, i) => {
-            const Icon = [LuShieldCheck, LuUserCheck, LuFileCheck, LuGauge][i] ?? LuLayers;
-            return (
-              <li key={w.title} className="card p-6">
-                <Icon className="size-5 text-muted" aria-hidden />
-                <p className="mt-3 font-semibold tracking-tight text-bright">{w.title}</p>
-                <p className="mt-1 text-sm text-muted">{w.text}</p>
-              </li>
-            );
-          })}
-        </ul>
-      </Block>
 
-      {/* Projects */}
-      <Block id="work" label="work" title="Things I’ve shipped.">
-        <ProjectCarousel projects={projects} />
-      </Block>
-
-      {/* Experience & achievements */}
-      <Block id="experience" label="experience" title="Experience & wins.">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <div className="card p-6 sm:p-8">
-            <p className="text-xs uppercase tracking-wider text-dim">Experience</p>
-            <ul className="mt-5 space-y-7">
-              {site.experience.map((e) => (
-                <li key={e.role} className="flex gap-3">
-                  <LuBriefcase className="mt-1 shrink-0 text-dim" aria-hidden />
-                  <div className="min-w-0">
-                    <p className="font-medium text-bright">{e.role}</p>
-                    <p className="text-sm text-muted">{e.org} · {e.when}</p>
-                    {"points" in e && e.points && (
-                      // Collapsed by default; native <details>, so it works without JS
-                      <details className="dropdown group mt-3">
-                        <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-sm text-fg transition hover:border-dim hover:text-bright [&::-webkit-details-marker]:hidden">
-                          {e.points.length} client projects
-                          <LuChevronDown className="size-4 transition-transform duration-300 group-open:rotate-180" aria-hidden />
-                        </summary>
-                        <ul className="mt-4 space-y-4">
-                          {e.points.map((pt) => (
-                            <li key={pt.name} className="border-l-2 border-line pl-4">
-                              <p className="text-bright">
-                                {pt.name} <span className="text-sm text-muted">· {pt.when}</span>
-                                {"href" in pt && pt.href && (
-                                  <a href={pt.href} target="_blank" rel="noreferrer" className="term-link ml-2 text-sm">code</a>
-                                )}
-                              </p>
-                              <p className="mt-1 text-sm text-muted">{pt.text}</p>
-                            </li>
-                          ))}
-                        </ul>
-                      </details>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
+        {/* (05) Posters + films */}
+        <section id="creatives" className="pad">
+          <div className="sechead label">
+            <span>(05) Posters · films</span>
+            <span className="mute">AI-assisted, art-directed by me</span>
           </div>
-          <div className="card p-6 sm:p-8">
-            <p className="text-xs uppercase tracking-wider text-dim">Hackathons · all entered solo</p>
-            <ul className="mt-5 space-y-3">
-              {site.achievements.map((a) => (
-                <li key={a.text} className="flex items-start gap-3">
-                  <LuTrophy className={`mt-1 shrink-0 ${a.text.startsWith("Winner") ? "text-rust" : "text-dim"}`} aria-hidden />
-                  <span className={a.text.startsWith("Winner") ? "text-bright" : "text-fg"}>
-                    {a.text}
-                    {a.href && (
-                      <a href={a.href} target="_blank" rel="noreferrer" className="term-link ml-2 inline-flex items-center gap-0.5 text-sm">
-                        certificate <LuArrowUpRight className="size-3" aria-hidden />
-                      </a>
-                    )}
-                  </span>
-                </li>
+          <div className="wall">
+            {projects
+              .filter((p) => p.poster)
+              .map((p) => (
+                <Link key={p.slug} href={`/work/${p.slug}`}>
+                  <img src={p.poster} alt={`${p.name} launch poster`} loading="lazy" />
+                  <p className="label mute">{p.name} · launch poster</p>
+                </Link>
               ))}
-            </ul>
           </div>
-        </div>
-      </Block>
+          <div className="films">
+            {site.brandVideos.map((v) => (
+              <div key={v.name}>
+                <video src={v.video} poster={v.video.replace(".mp4", ".jpg")} controls muted playsInline preload="none" />
+                <p className="label mute" style={{ fontSize: 13, marginTop: 10 }}>
+                  <a href={v.href} target="_blank" rel="noopener">
+                    {v.name}
+                  </a>{" "}
+                  · {v.d}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* Skills */}
-      <Block label="skills" title="Tools of the trade.">
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
-          {site.stack.map((t) => {
-            const Icon = stackIcons[t.name] ?? LuLayers;
-            return (
-              <li key={t.name} className="card flex items-center gap-4 p-4">
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl" style={{ background: t.bg, color: t.fg }}>
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <div className="min-w-0">
-                  <p className="font-medium text-bright">{t.name}</p>
-                  <p className="text-xs text-muted">used in {t.usedIn.join(", ")}</p>
+        {/* (06) Tools + kits teaser */}
+        <section id="tools" className="pad" style={{ paddingTop: 0 }}>
+          <div className="sechead label">
+            <span>(06) Tools I use every day</span>
+            <span className="mute">Tools · UI Kit</span>
+          </div>
+          <div className="tool-cards">
+            {tools.map((t) => (
+              <Link key={t.slug} href={`/tools/${t.slug}`} style={css({ "--c": t.color })}>
+                <AppIcon src={t.logo} size={56} alt={`${t.name} icon`} />
+                <span className="display">{t.name}</span>
+                <span className="label mute">{t.kind}</span>
+                <p>{t.tagline}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="kit-cards">
+            {kits.map((k) => (
+              <Link key={k.slug} href={`/ui-kit#${k.slug}`} style={css({ "--c": k.color })}>
+                <img src={k.images[0].src} alt={k.images[0].alt} loading="lazy" />
+                <div>
+                  <span className="display">{k.name}</span>
+                  <span className="pill dark">Install →</span>
                 </div>
-              </li>
-            );
-          })}
-        </ul>
-        <div className="card mt-6 grid gap-x-10 gap-y-6 p-6 sm:grid-cols-2 sm:p-8 xl:grid-cols-4">
-          {Object.entries(site.skills).map(([group, items]) => (
-            <div key={group}>
-              <p className="text-xs uppercase tracking-wider text-dim">{group}</p>
-              <p className="mt-1.5 text-fg">{items.join(" · ")}</p>
-            </div>
-          ))}
-          <div className="sm:col-span-2 xl:col-span-4 border-t border-line pt-6">
-            <p className="text-xs uppercase tracking-wider text-dim">I build</p>
-            <p className="mt-1.5 text-fg">{site.builds.join(" · ")}</p>
-          </div>
-        </div>
-      </Block>
-
-      {/* Principles */}
-      <Block label="principles" title="How I build.">
-        <ol className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {site.principles.map((p, i) => (
-            <li key={p} className="card p-6">
-              <span className="text-sm text-dim tabular-nums">{String(i + 1).padStart(2, "0")}</span>
-              <p className="mt-2 text-lg font-medium tracking-tight text-bright">{p}</p>
-            </li>
-          ))}
-        </ol>
-      </Block>
-
-      {/* Job search */}
-      <Block id="hiring" label="open to work" title="What I’m looking for.">
-        <div className="card grid gap-8 p-6 sm:p-8 lg:grid-cols-3 lg:p-10">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-dim">Roles</p>
-            <ul className="mt-2 flex flex-wrap gap-2">
-              {site.jobSearch.roles.map((r) => (
-                <li key={r} className="rounded-full bg-bright px-3 py-1 text-sm text-surface2">{r}</li>
-              ))}
-            </ul>
-            <p className="mt-6 text-xs uppercase tracking-wider text-dim">Teams I’d fit</p>
-            <p className="mt-1.5 text-fg">{site.jobSearch.teams.join(" · ")}</p>
-          </div>
-          <dl className="grid grid-cols-2 content-start gap-x-6 gap-y-4 border-line lg:border-x lg:px-8">
-            {site.jobSearch.details.map((d) => (
-              <div key={d.label}>
-                <dt className="text-xs uppercase tracking-wider text-dim">{d.label}</dt>
-                <dd className="mt-0.5 font-medium text-bright">{d.value}</dd>
-              </div>
+                <p>{k.tagline}</p>
+              </Link>
             ))}
-          </dl>
-          <div className="flex flex-col justify-center gap-3">
-            <p className="text-fg">Email is the fastest way to reach me.</p>
-            <div className="flex flex-wrap gap-2">
-              <a href={`mailto:${site.email}`} className="term-btn term-btn-solid"><LuMail aria-hidden /> Email me</a>
-              <a href={site.links.resume} className="term-btn"><LuDownload aria-hidden /> Résumé</a>
-              <a href={site.links.linkedin} className="term-btn"><LuLinkedin aria-hidden /> LinkedIn</a>
+          </div>
+        </section>
+
+        {/* (07) Experience + recognition, from the full-stack site */}
+        <section id="experience" className="pad" style={{ paddingTop: 0 }}>
+          <div className="sechead label">
+            <span>(07) Experience &amp; recognition</span>
+            <span className="mute">Since 2023</span>
+          </div>
+          <div className="xp">
+            <div>
+              {experience.map((e) => (
+                <div key={e.role} className="xp-item">
+                  <div className="xp-head">
+                    <h3>{e.role}</h3>
+                    <span className="label mute">{e.when}</span>
+                  </div>
+                  <p className="mute">{e.org}</p>
+                  {e.points.length > 0 && (
+                    <ul>
+                      {e.points.map((p) => (
+                        <li key={p.name}>
+                          <a href={p.href} target="_blank" rel="noopener">
+                            <b>{p.name}</b>
+                          </a>{" "}
+                          ({p.when}): {p.text}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+              <div className="xp-item">
+                <div className="xp-head">
+                  <h3>{education.degree}</h3>
+                  <span className="label mute">{education.years}</span>
+                </div>
+                <p className="mute">{education.school}</p>
+              </div>
+            </div>
+            <div className="awards">
+              {awards.map((a) => (
+                <a key={a.t} href={a.href} target="_blank" rel="noopener">
+                  <span className="display">{a.t}</span>
+                  <span>{a.d}</span>
+                  <span className="label">Certificate ↗</span>
+                </a>
+              ))}
             </div>
           </div>
-        </div>
-      </Block>
+          <p className="label mute dock-label">Stack I build with</p>
+          <ul className="dock">
+            {dock.map((d) => (
+              <li key={d.s} style={css({ background: d.bg, color: d.fg })}>
+                {d.s}
+                <span className="tip">{d.n}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* (08) Roles */}
+        <section id="roles" className="pad" style={{ paddingTop: 0 }}>
+          <div className="sechead label">
+            <span>(08) Hire me as</span>
+            <span className="mute">Full-time · open to relocate</span>
+          </div>
+          <ul className="roles">
+            {site.roles.map((r, i) => (
+              <li key={r} style={css({ "--c": pick(i) })}>
+                <span>
+                  <Ill name={roleIcons[r]} size={64} />
+                  <span className="display" style={{ display: "block" }}>
+                    {r}
+                  </span>
+                </span>
+                <p>{roleText[r]}</p>
+              </li>
+            ))}
+          </ul>
+          <div className="linkrow label" style={{ justifyContent: "flex-start", marginTop: 34 }}>
+            <a href="/Aman_Kumar_Chhari_Resume_Design_Engineer.pdf" target="_blank">
+              Resume · Design Engineer ↓
+            </a>
+            <a href="/Aman_Kumar_Chhari_Resume_AI_Product_Engineer.pdf" target="_blank">
+              Resume · AI Product Engineer ↓
+            </a>
+            <a href="/Aman_Kumar_Chhari_Resume.pdf" target="_blank">
+              Resume · Full-stack ↓
+            </a>
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section id="contact" className="pad talk">
+          <p className="label">(09) Contact</p>
+          <Link href="/contact" className="big display multi">
+            <Letters text="Let's talk" />
+          </Link>
+          <div className="talk-row">
+            <a className="mail" href={`mailto:${site.email}`}>
+              {site.email}
+            </a>
+            <span className="mute">{site.location}</span>
+          </div>
+          <div className="cta">
+            {site.links.slice(0, 2).map((l) => (
+              <a key={l.href} className="pill ghost" href={l.href} target="_blank" rel="noopener">
+                {l.label} ↗
+              </a>
+            ))}
+            <a className="pill ghost" href="/Aman_Kumar_Chhari_Resume_Design_Engineer.pdf" target="_blank">
+              Resume ↓
+            </a>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </>
   );
 }
