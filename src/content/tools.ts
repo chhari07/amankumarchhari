@@ -177,6 +177,11 @@ export const kits: Kit[] = [
       { label: "Latest release", href: "https://github.com/chhari07/ubuntu-mac-kit/releases/latest" },
     ],
     meta: "Ubuntu 24.04+ · GNOME 46 · v1.1.0 · open source",
+    cover: {
+      src: "/thumbnails/ubuntu-mac-kit.webp",
+      og: "/thumbnails/ubuntu-mac-kit-og.png",
+      alt: "Ubuntu Mac Kit thumbnail: a macOS-style Ubuntu desktop with the Mac Bar",
+    },
   },
   {
     slug: "ubuntu-widgets",
