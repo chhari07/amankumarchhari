@@ -530,3 +530,8 @@ footer { align-items: center; }
   .menubar.open { height: auto; }
   .mb-brand .solox-logo { height: 40px; }
 }
+
+/* Wide thumbnails (tools + kits) */
+.cover { margin: 40px 0 0; }
+.cover.pad { margin: 0 0 60px; }
+.cover img { width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); }

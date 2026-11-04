@@ -55,6 +55,11 @@ export default function UiKitPage() {
               </h2>
             </div>
             <p className="kit-tag">{k.tagline}</p>
+            {k.cover ? (
+              <figure className="cover">
+                <img src={k.cover.src} alt={k.cover.alt} width={1280} height={640} loading="lazy" />
+              </figure>
+            ) : null}
             <div className={`kit-media n${k.images.length}`}>
               {k.images.map((im) => (
                 <img key={im.src} src={im.src} alt={im.alt} loading="lazy" />

@@ -13,7 +13,9 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/tools/[slug]">): Promise<Metadata> {
   const t = getTool((await props.params).slug);
-  return t ? { title: t.name, description: t.tagline } : {};
+  if (!t) return {};
+  const images = t.cover ? [{ url: t.cover.og, width: 1280, height: 640, alt: t.cover.alt }] : undefined;
+  return { title: t.name, description: t.tagline, openGraph: { title: t.name, description: t.tagline, images }, twitter: images ? { card: "summary_large_image", images: [t.cover!.og] } : undefined };
 }
 
 export default async function ToolPage(props: PageProps<"/tools/[slug]">) {
@@ -56,6 +58,12 @@ export default async function ToolPage(props: PageProps<"/tools/[slug]">) {
             </div>
           </div>
         </header>
+
+        {t.cover ? (
+          <figure className="cover pad">
+            <img src={t.cover.src} alt={t.cover.alt} width={1280} height={640} />
+          </figure>
+        ) : null}
 
         {t.shots ? (
           <div className="tool-shots pad">

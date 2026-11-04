@@ -19,6 +19,8 @@ export type Tool = {
   links: Link[];
   // Real app screens (rendered from the app's own HTML, framed). The first one is the hover preview on /tools.
   shots?: { src: string; alt: string; label: string }[];
+  // Wide thumbnail (1280x640) shown under the header; also used as the page's social preview image.
+  cover?: { src: string; og: string; alt: string };
 };
 
 export const tools: Tool[] = [
@@ -99,6 +101,11 @@ export const tools: Tool[] = [
     stack: "Java · Android App Widgets · GitHub public API",
     status: "In daily use on my phone. Not published.",
     links: [{ label: "Desktop version", href: "/ui-kit#ubuntu-widgets" }],
+    cover: {
+      src: "/thumbnails/github-phone-widgets.webp",
+      og: "/thumbnails/github-phone-widgets-og.png",
+      alt: "GitHub Widgets thumbnail: contribution calendar and repo widgets on an Android home screen",
+    },
   },
   {
     slug: "mac-bar",
@@ -144,6 +151,7 @@ export type Kit = {
   video: string;
   links: Link[];
   meta: string;
+  cover?: { src: string; og: string; alt: string };
 };
 
 export const kits: Kit[] = [
@@ -193,5 +201,10 @@ export const kits: Kit[] = [
       { label: "Latest release", href: "https://github.com/chhari07/ubuntu-widgets/releases/latest" },
     ],
     meta: "Ubuntu 24.04 · v1.0.1 · MIT licence",
+    cover: {
+      src: "/thumbnails/ubuntu-widgets.webp",
+      og: "/thumbnails/ubuntu-widgets-og.png",
+      alt: "Ubuntu Widgets thumbnail: GitHub repo analyser and contribution calendar on the Ubuntu desktop",
+    },
   },
 ];
