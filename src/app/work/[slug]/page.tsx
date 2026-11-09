@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { AppIcon, MenuBar, Footer, Rise } from "@/components/chrome";
 import { getProject, projects } from "@/content/portfolio";
 import { getDeep } from "@/content/fullstack";
+import { getSystem, userFlows } from "@/content/case-diagrams";
+import { Architecture, FlowLanes } from "@/components/case-diagrams";
 
 export const dynamicParams = false;
 
@@ -23,6 +25,8 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
   const i = projects.indexOf(p);
   const next = projects[(i + 1) % projects.length];
   const deep = getDeep(p.slug);
+  const system = getSystem(p.slug);
+  const flow = userFlows[p.slug];
 
   return (
     <>
@@ -95,6 +99,23 @@ export default async function CaseStudy(props: PageProps<"/work/[slug]">) {
             </div>
           ))}
         </div>
+
+        {flow ? (
+          <div className="cs-dia pad">
+            <h2 className="display">User flow</h2>
+            <p className="mute">{flow.caption}</p>
+            <FlowLanes flow={flow} slug={p.slug} />
+            <p className="dia-hint">Scroll sideways to see every step 👉</p>
+          </div>
+        ) : null}
+        {system ? (
+          <div className="cs-dia pad">
+            <h2 className="display">Architecture</h2>
+            {system.caption ? <p className="mute">{system.caption}</p> : null}
+            <Architecture system={system} slug={p.slug} />
+            <p className="dia-hint">Scroll sideways to see the whole system 👉</p>
+          </div>
+        ) : null}
 
         {deep ? (
           <>
