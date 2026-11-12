@@ -33,7 +33,7 @@ Every number on the site is measured (JMeter runs, eval files, real repos), not 
 |---|---|
 | `/` | Hero, what I do (5 steps), selected work, measured results, how I build AI, posters and films, tools, experience, roles, contact |
 | `/work/[slug]` | Case studies: CloseBy, Stack, ScanCart.ai, Streetwise, Orderly. Problem, what I built, brand story, numbers, decisions, failure handling, JMeter results |
-| `/tools`, `/tools/[slug]` | Apps I built for my own phone and desktop: Wakeface, OTG Switch, GitHub Widgets, Mac Bar |
+| `/tools`, `/tools/[slug]` | Apps I built for my own phone and desktop: Wakeface, OTG Switch, GitHub Widgets, Mac Bar, Mac Notch, Mac Snap |
 | `/ui-kit` | Open-source Ubuntu Mac Kit and Ubuntu Widgets, with one-command installs, plus the SOLOX design system |
 | `/about` | About me, what I'm looking for, experience, certificates, skills, principles |
 | `/contact` | Contact form (opens your email app, no backend) and links |
@@ -46,7 +46,7 @@ Every number on the site is measured (JMeter runs, eval files, real repos), not 
 |---|---|---|
 | CloseBy | AI marketplace for neighbourhood shops, with one gateway for every model call | [Live](https://closeby-ashy.vercel.app) · [Code](https://github.com/chhari07/closeby) |
 | Stack | Local-first reading app (web + Android) with spaced review of highlights | [Live](https://stack-henna-delta.vercel.app) · [Code](https://github.com/chhari07/stackforge) |
-| ScanCart.ai | Chrome extension: 7 parallel AI checks behind one Trust Score | [Live](https://scancartdemo.netlify.app) · [Code](https://github.com/chhari07/scancart-ai) |
+| ScanCart.ai | Chrome extension + Android app: parallel checks behind one Trust Score, open source | [Live](https://scancart-ai.vercel.app) · [Code](https://github.com/chhari07/scancart-ai) |
 | Streetwise | Four Fetch.ai agents for local buying, one QR per shop | [Code](https://github.com/chhari07/streetwise-agents) |
 | Orderly | WhatsApp bot + owner app for kirana shops | [Live](https://orderly-blue.vercel.app) |
 
