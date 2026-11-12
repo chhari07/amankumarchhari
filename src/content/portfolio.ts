@@ -181,14 +181,16 @@ export const projects: Project[] = [
     "slug": "scancart",
     "logo": "/icons/scancart.webp",
     "name": "ScanCart.ai",
-    "kind": "AI Chrome extension · trust",
+    "kind": "AI Chrome extension + Android app · trust",
     "color": "#3b6bff",
     "tagline": "One Trust Score for any listing.",
     "problem": "Shoppers on Indian marketplaces can't easily tell a fake product or a paid review from a real one.",
     "built": [
       "A Chrome extension sends the listing to a backend that runs 6 specialist AI agents in parallel, then a compliance agent.",
       "All 7 checks combine into one weighted Trust Score with the reasons behind it.",
-      "A check that fails is left out and shown as \"X of 7 checks\", never guessed."
+      "A check that fails is left out and shown as \"X of 7 checks\", never guessed.",
+      "Trust-first scoring: a real MacBook listing that was wrongly flagged (63, caution) now scores 86, safe; a fake ₹24,999 MacBook scores 40, do not buy.",
+      "An Android app brings the same panel to phones: share a link to ScanCart, tap a floating bubble, or turn on the automatic check inside shopping apps."
     ],
     "story": "A friendly robot mascot and a worried shopper asking \"Is this listing even real?!\". The comic runs shopping online, scan it, reviews checked, buy with confidence, and the strip says it in one line: 7 checks, one weighted Trust Score.",
     "numbers": [
@@ -205,22 +207,22 @@ export const projects: Project[] = [
         "l": "finalists, Pitch-a-Thon 2026 Jaipur"
       }
     ],
-    "stack": "Node.js · Express · Claude API · Chrome MV3 · React",
+    "stack": "Node.js · Express · Claude API · Chrome MV3 · React · Android",
     "poster": "/posters/scancart.webp",
     "banner": "/cards/scancart-wide.webp",
     "shot": "/shots/scancart-site.webp",
     "video": "/videos/scancart-ai-explainer.mp4",
     "links": [
       {
-        "label": "Live demo",
-        "href": "https://scancartdemo.netlify.app"
+        "label": "Website",
+        "href": "https://scancart-ai.vercel.app"
       },
       {
         "label": "GitHub",
         "href": "https://github.com/chhari07/scancart-ai"
       }
     ],
-    "role": "Solo: extension, backend, agents",
+    "role": "Solo: extension, Android app, backend, agents",
     "year": "2026"
   },
   {

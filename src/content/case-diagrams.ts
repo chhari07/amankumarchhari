@@ -76,7 +76,7 @@ export const userFlows: Record<string, UserFlow> = {
     caption: "One click on a listing, seven checks in parallel, one score the shopper can act on.",
     steps: [
       { actor: "Shopper", title: "Open", text: "Shopper opens a product listing on an Indian marketplace." },
-      { actor: "Shopper", title: "Scan", text: "One click on the ScanCart Chrome extension." },
+      { actor: "Shopper", title: "Scan", text: "One click on the Chrome extension, or share the link to the Android app." },
       { actor: "ScanCart", title: "Extract", text: "The extension reads the listing from the product page." },
       { actor: "ScanCart", title: "7 checks", text: "Six agents run in parallel, then compliance uses seller + price." },
       { actor: "ScanCart", title: "Score", text: "Failed checks are dropped; the rest are weighted into one Trust Score." },

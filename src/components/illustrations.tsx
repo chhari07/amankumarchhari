@@ -1,7 +1,7 @@
 // Hand-drawn style line illustrations. Black strokes; the offset shape fills with --c on hover
 // (see .ill in globals.css). Drawn for this site, no external assets.
 
-export type IllName = "listen" | "build" | "guard" | "brand" | "tell" | "design" | "creative" | "ai" | "deploy" | "clock" | "usb" | "pocket" | "calendar" | "reply" | "topbar";
+export type IllName = "listen" | "build" | "guard" | "brand" | "tell" | "design" | "creative" | "ai" | "deploy" | "clock" | "usb" | "pocket" | "calendar" | "reply" | "topbar" | "notch" | "snap";
 
 const ICONS: Record<IllName, { fill: string; stroke: string }> = {
   listen: {
@@ -59,6 +59,14 @@ const ICONS: Record<IllName, { fill: string; stroke: string }> = {
   reply: {
     fill: `<path d="M14 24h56a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6H40L26 74V62H14a6 6 0 0 1-6-6V30a6 6 0 0 1 6-6z"/>`,
     stroke: `<path d="M14 24h56a6 6 0 0 1 6 6v26a6 6 0 0 1-6 6H40L26 74V62H14a6 6 0 0 1-6-6V30a6 6 0 0 1 6-6z"/><path d="M22 36h40M22 46h26"/><path d="M92 58l-10-8v5c-12 0-18 6-20 16 5-6 10-8 20-8v5z"/>`,
+  },
+  notch: {
+    fill: `<rect x="10" y="18" width="80" height="64" rx="6"/>`,
+    stroke: `<rect x="10" y="18" width="80" height="64" rx="6"/><path d="M32 18v8a8 8 0 0 0 8 8h20a8 8 0 0 0 8-8v-8"/><path d="M42 26h6M56 24v4M60 22v8M64 24v4"/><rect x="22" y="50" width="56" height="20" rx="5"/><path d="M30 57h28M30 63h18"/>`,
+  },
+  snap: {
+    fill: `<rect x="12" y="20" width="36" height="60" rx="5"/>`,
+    stroke: `<rect x="12" y="20" width="36" height="60" rx="5"/><rect x="54" y="20" width="34" height="27" rx="5"/><rect x="54" y="53" width="34" height="27" rx="5"/><path d="M20 32h18M20 40h12"/>`,
   },
   topbar: {
     fill: `<rect x="10" y="18" width="80" height="64" rx="6"/>`,

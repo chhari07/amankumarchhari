@@ -395,17 +395,17 @@ export const projects: Project[] = [
     slug: "scancart",
     name: "ScanCart.ai",
     tagline: "Parallel multi-agent trust scoring for Indian e-commerce",
-    role: "Solo: extension, backend, agents",
+    role: "Solo: extension, Android app, backend, agents",
     year: "2026",
-    stack: ["JavaScript", "Node.js", "Express", "Claude API", "Chrome MV3", "React", "Clerk", "Firebase", "Apache JMeter"],
+    stack: ["JavaScript", "Node.js", "Express", "Claude API", "Chrome MV3", "React", "Java (Android)", "Clerk", "Firebase", "Vercel", "Apache JMeter"],
     cover: "/projects/scancart-site.png",
     card: "/projects/cards/scancart.webp",
     banner: "/projects/cards/scancart-wide.webp",
     userFlow: { src: "/figures/scancart-flow.html", title: "ScanCart user flow: open a listing, scan, seven checks, one Trust Score, decide" },
     anatomy: { src: "/figures/scancart.html", title: "Scan bench: ScanCart's seven checks as probe heads feeding one Trust Score dial" },
     links: [
+      { label: "Website", href: "https://scancart-ai.vercel.app" },
       { label: "GitHub", href: "https://github.com/chhari07/scancart-ai" },
-      { label: "Live demo", href: "https://scancartdemo.netlify.app" },
     ],
     problem:
       "Shoppers on Indian marketplaces can't easily tell a fake product or a paid review from a real one. ScanCart runs checks on a listing and gives one Trust Score with the reasons behind it.",
@@ -414,6 +414,9 @@ export const projects: Project[] = [
       "Latency equals the slowest check, not the sum: parallel fan-out cut scan time 2.8× (13.7 s of sequential model time → 4.8 s).",
       "Failed checks are left out of the score and shown as \"X of 7 checks\", never guessed. With one agent hung, 100% of scans still scored.",
       "JMeter at 50 concurrent users: 200/200 scans OK with no latency increase over a single user.",
+      "Trust-first scoring (v1.2): a real MacBook from a big-store seller went from a false 63 (caution) to 86 (safe); a fake ₹24,999 MacBook from an unknown shop scores 40 (do not buy).",
+      "Android app: Share any shop link to ScanCart, tap a floating bubble, or turn on an automatic check that reads the open product in the Amazon app and shows a score chip (a real listing: 85, safe).",
+      "Open source under MIT. Website and backend are live on Vercel; a push to main deploys both.",
       "Pitched at Rajasthan AI Builders Pitch-a-Thon 2026.",
     ],
     architecture: {
@@ -439,6 +442,16 @@ export const projects: Project[] = [
         why: "A retired model id once broke the backend; config makes swaps a one-line change.",
       },
       {
+        chose: "Trust-first scoring: neutral when a fact is missing, warn only on real evidence",
+        rejected: "Treating every unknown seller or big discount as a risk",
+        why: "Real listings from big-store sellers were flagged as caution. Missing data now stays neutral; a fake-sale verdict needs 3+ prices over 7+ days.",
+      },
+      {
+        chose: "Android share sheet + bubble, automatic check only when the user turns it on",
+        rejected: "Always-on screen reading",
+        why: "Sharing a link works in every app with no special permission; the automatic Accessibility mode is opt-in.",
+      },
+      {
         chose: "All model calls from the backend",
         rejected: "Calling the API from the browser",
         why: "Keeps the API key off the client.",
@@ -447,6 +460,7 @@ export const projects: Project[] = [
     failures: [
       { what: "One or more checks time out or error", handling: "Excluded from the score; the UI shows how many checks ran." },
       { what: "Demo data could look like a real scan", handling: "Every result carries a source so demo data is labelled." },
+      { what: "No AI key on the server", handling: "Rule-based checks still run and the panel says \"basic check (no AI)\"." },
     ],
     metrics: [
       { label: "Agents per scan", value: "6 + 1" },
@@ -464,7 +478,7 @@ export const projects: Project[] = [
         { test: "Rate limit", load: "120 calls from one client", result: "100 allowed, then 429" },
       ],
     },
-    next: ["Labelled eval set of real vs fake listings", "Cache repeat scans of the same listing"],
+    next: ["Labelled eval set of real vs fake listings", "Add the AI key to the live backend (it runs rule-only checks today)", "Keep price history in a real database instead of temporary storage"],
     system: {
       caption: "The extension never calls a model. The backend fans out, fuses the results and returns one verdict.",
       zones: [
@@ -475,7 +489,7 @@ export const projects: Project[] = [
       ],
       nodes: [
         { id: "shopper", label: "Shopper", sub: "on an Amazon / Flipkart listing", kind: "actor", col: 0, row: 0 },
-        { id: "ext", label: "Chrome extension", sub: "MV3 content script · verdict card", kind: "client", col: 0, row: 1 },
+        { id: "ext", label: "Chrome extension / Android app", sub: "MV3 content script · share sheet · bubble", kind: "client", col: 0, row: 1 },
         { id: "api", label: "Express API", sub: "Zod · rate limit · Helmet · key stays here", kind: "gate", col: 1, row: 1 },
         { id: "agents", label: "6 specialist agents", sub: "reviews · ratings · seller · price · quality · alternatives", kind: "ai", col: 2, row: 0 },
         { id: "comp", label: "Compliance agent", sub: "uses the seller + price results", kind: "ai", col: 2, row: 1 },

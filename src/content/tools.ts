@@ -1,7 +1,7 @@
 // Tools and UI kits. Every fact here is from the real builds; private tools have no code link.
 import type { Link } from "./portfolio";
 
-export type ToolIcon = "clock" | "usb" | "pocket" | "calendar" | "reply" | "topbar";
+export type ToolIcon = "clock" | "usb" | "pocket" | "calendar" | "reply" | "topbar" | "notch" | "snap";
 
 export type Tool = {
   slug: string;
@@ -31,27 +31,30 @@ export const tools: Tool[] = [
     kind: "Android app · clock + lock screen",
     color: "#ff6a3d",
     icon: "clock",
-    tagline: "A flip clock that is also my lock screen.",
+    tagline: "A flip clock that is also my lock screen and phone app.",
     problem:
       "Stock clock apps look the same on every phone, and the lock screen can't be styled. I wanted one big, readable clock face for alarms, the lock screen and music, in my own type.",
     does: [
       "Big flip-clock face in Anton digits that auto-fit the screen.",
       "Alarms set through Android's own alarm clock API, so they ring reliably.",
       "Works as the main lock screen: fingerprint, face or PIN still unlock the phone.",
-      "Music controls with drag-to-seek on the lock face.",
+      "Now Playing lock layout: thin clock, music pill, up to 2 notifications (swipe to clear) and a big music card.",
+      "8 clock fonts to pick from on the Lock tab, with numbers in one line or stacked.",
+      "An iPhone-style Phone inside the app: Favourites, Recents, Contacts, Keypad, and a slide-to-answer call screen. Google Phone stays the default dialer.",
     ],
     built: [
       "Java app with a WebView UI (HTML/CSS faces in the app's assets).",
       "Gradle-free build script: aapt2, javac and d8, signed with my release key.",
       "When the original source folder was lost, I rebuilt the Java source by hand from the installed APK's bytecode, keeping every alarm on the phone.",
+      "The call screen listens for phone-state changes and hands keypad and add-call over to Google Phone, so no root or default-dialer switch is needed.",
     ],
     stack: "Java · Android WebView · HTML/CSS · aapt2 / d8",
-    status: "v1.7, in daily use on my phone. Not published.",
+    status: "v2.0, in daily use on my phone. Not published.",
     links: [],
     shots: [
-      { src: "/tools/wakeface-lock.webp", alt: "Wakeface lock screen with big clock and music player", label: "Lock screen" },
-      { src: "/tools/wakeface-clock.webp", alt: "Wakeface Clock tab with big digits and the bottom tab bar", label: "Clock tab" },
-      { src: "/tools/wakeface-saver.webp", alt: "Wakeface night screen saver with colour glows", label: "Screen saver" },
+      { src: "/tools/wakeface-lock.webp", alt: "Wakeface Now Playing lock screen with clock, notifications and music card (sample data)", label: "Now Playing lock" },
+      { src: "/tools/wakeface-phone.webp", alt: "Wakeface iPhone-style Phone, Recents tab (sample contacts)", label: "Phone · Recents" },
+      { src: "/tools/wakeface-call.webp", alt: "Wakeface incoming call screen with slide to answer (sample caller)", label: "Call screen" },
     ],
   },
   {
@@ -133,6 +136,67 @@ export const tools: Tool[] = [
       { label: "In Ubuntu Mac Kit", href: "/ui-kit#ubuntu-mac-kit" },
       { label: "GitHub", href: "https://github.com/chhari07/ubuntu-mac-kit" },
     ],
+  },
+  {
+    slug: "mac-notch",
+    logo: "/icons/mac-notch.svg",
+    name: "Mac Notch",
+    kind: "GNOME Shell extension",
+    color: "#ff6a3d",
+    icon: "notch",
+    tagline: "A live glass notch and a Mac-type lock screen for Ubuntu.",
+    problem:
+      "On Ubuntu, music, notifications, Bluetooth and charging each show up in a different corner. I wanted one place at the top of the screen, like the notch on a Mac, plus a lock screen that shows what matters.",
+    does: [
+      "A frosted-glass notch at the top centre: cover art and a live wave while music plays, a split view when earbuds are connected.",
+      "Takes over GNOME's top banners: each notification shows in the notch with the app's own buttons (like Reply), Open and dismiss.",
+      "Bluetooth device battery ring, a short \"Charging 78%\" when plugged in, and an unread count on the idle notch.",
+      "Hover for a panel with Now Playing, the last 4 notifications, battery and a Focus toggle.",
+      "Mac-type lock screen: date above a big clock, a Now Playing card and glass cards for calendar, GitHub activity and battery.",
+    ],
+    built: [
+      "GNOME Shell extension in JavaScript (GJS) for GNOME 46.",
+      "Music from MPRIS, notifications from GNOME's message tray, Bluetooth from GnomeBluetooth, battery from UPower.",
+      "Tested in a headless GNOME Shell with a virtual monitor, never on the live desktop first.",
+    ],
+    stack: "JavaScript (GJS) · GNOME Shell · Clutter · MPRIS · UPower",
+    status: "In daily use on my desktop. Not published.",
+    links: [],
+    cover: {
+      src: "/thumbnails/mac-notch.webp",
+      og: "/thumbnails/mac-notch-og.png",
+      alt: "Mac Notch thumbnail: a glass notch with music and a notification on a drawn Ubuntu desktop",
+    },
+  },
+  {
+    slug: "mac-snap",
+    logo: "/icons/mac-snap.svg",
+    name: "Mac Snap",
+    kind: "GNOME Shell extension",
+    color: "#3b6bff",
+    icon: "snap",
+    tagline: "Mac-style window snapping for Ubuntu.",
+    problem:
+      "Ubuntu only snaps windows to halves by dragging. I wanted the macOS Move & Resize menu: rest on the maximise button and pick a layout, or use one shortcut.",
+    does: [
+      "Rest the pointer on a window's maximise button and a glass Move & Resize menu opens.",
+      "Halves, quarters, thirds, fill, centre and restore, with a 10 px gap between windows.",
+      "Keyboard shortcuts for every layout (Super+Alt+U/I/J/K for quarters, Super+Alt+1/2/3 for thirds).",
+    ],
+    built: [
+      "GNOME Shell extension in JavaScript (GJS) for GNOME 46.",
+      "On Wayland apps draw their own title buttons, so the shell can't hook the real button; the extension watches where the pointer rests instead.",
+      "Drag-to-edge stays with Ubuntu's own tiling assistant, set to the same gap so both match.",
+      "Every layout checked to land on the exact rectangle in a nested test shell.",
+    ],
+    stack: "JavaScript (GJS) · GNOME Shell · Mutter",
+    status: "Built for my desktop. Not published.",
+    links: [],
+    cover: {
+      src: "/thumbnails/mac-snap.webp",
+      og: "/thumbnails/mac-snap-og.png",
+      alt: "Mac Snap thumbnail: windows snapped into halves and quarters with the Move & Resize menu",
+    },
   },
 ];
 

@@ -5,7 +5,7 @@ import { tools } from "@/content/tools";
 
 export const metadata: Metadata = {
   title: "Tools",
-  description: "Small tools I built for my own phone and desktop: Android apps, home-screen widgets and a GNOME extension.",
+  description: "Small tools I built for my own phone and desktop: Android apps, home-screen widgets and GNOME extensions.",
 };
 
 export default function ToolsPage() {
@@ -22,7 +22,7 @@ export default function ToolsPage() {
             <Rise text="Tools" />
           </h1>
           <p className="page-intro fade">
-            Small tools I made because something in my own day was slow or annoying: Android apps, home-screen widgets and a desktop extension.
+            Small tools I made because something in my own day was slow or annoying: Android apps, home-screen widgets and desktop extensions.
             Each one solves one problem.
           </p>
         </header>
